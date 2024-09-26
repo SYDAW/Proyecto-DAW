@@ -1,0 +1,12 @@
+Django~=4.1.2
+
+# Django environment variables
+# https://django-environ.readthedocs.io/
+django-environ
+
+#Postgres Requirement
+# sudo apt install python3-dev libpq-dev
+#development
+psycopg2-binary
+#production ready
+# psycopg2
