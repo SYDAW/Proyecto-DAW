@@ -244,5 +244,6 @@ Un usuario registrado decide comprar un libro digital. Le da al botón de compra
 El usuario ha realizado la compra y el libro se le enviará por correo electrónico.
 
 ### Modelo Relacional
-![Modelo-Relacional-BookVerse drawio](https://github.com/user-attachments/assets/03cbdde0-b9fc-4b22-bc41-a20f547bda55)
+![Diagrama sin título drawio](https://github.com/user-attachments/assets/431e07ff-4b66-4a2d-950c-28f5fe5d052f)
+
 
