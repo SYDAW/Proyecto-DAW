@@ -10,3 +10,4 @@ django-environ
 psycopg2-binary
 #production ready
 # psycopg2
+pillow

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="main-container">
+        <h1>{% trans "Editar Libro" %}</h1>
+        <form method="post" action="{% url 'edit_libro' libro.id %}">
+            {% csrf_token %}
+              <div class="form-group">
+                <label for="titulo">{% trans "Título" %}</label>
+                {{ form.titulo }}
+              </div>
+        
+              <div class="form-group">
+                <label for="isbn">{% trans "ISBN" %}</label>
+                {{ form.isbn }}
+              </div>
+        
+              <div class="form-group">
+                <label for="fecha_publicacion">{% trans "Fecha de Publicación" %}</label>
+                {{ form.fecha_publicacion }}
+              </div>
+        
+              <div class="form-group">
+                <label for="autor">{% trans "Autor" %}</label>
+                {{ form.autor }}
+              </div>
+        
+              <div class="form-group">
+                <label for="precio">{% trans "Precio" %}</label>
+                {{ form.precio }}
+              </div>
+        
+              <div class="form-group">
+                <label for="generos">{% trans "Géneros" %}</label>
+                {{ form.generos }}
+              </div>
+        
+              <div class="form-group">
+                <label for="descripcion">{% trans "Descripción" %}</label>
+                {{ form.descripcion }}
+              </div>
+        
+              <div class="form-group">
+                <label for="formato">{% trans "Formato" %}</label>
+                {{ form.formato }}
+              </div>
+        
+              <div class="form-group">
+                <label for="disponibilidad">{% trans "Disponibilidad" %}</label>
+                {{ form.disponibilidad }}
+              </div>
+
+              <div class="form-group">
+                {{ form.non_field_errors }}
+              </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-submit">{% trans "Guardar Cambios" %}</button>
+                <a href="{% url 'listar_libros' %}" class="btn btn-secondary">{% trans "Cancelar" %}</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

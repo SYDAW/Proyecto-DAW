@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="main-container">
+    <h1>{% trans "Editar Género" %}</h1>
+    <form method="post" action="{% url 'edit_genero' genero.id %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">{% trans "Nombre del género" %}</label>
+            {{ form.nombre }}
+        </div>
+        <div class="form-buttons">
+            <button type="submit" class="btn btn-submit">{% trans "Guardar Cambios" %}</button>
+            <a href="{% url 'listar_generos' %}" class="btn btn-secondary">{% trans "Cancelar" %}</a>
+        </div>    
+    </form>
+</div>
+{% endblock %}

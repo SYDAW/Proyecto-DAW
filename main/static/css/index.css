@@ -1,0 +1,752 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #E0ECDE;
+    padding-top: 60px;
+    scrollbar-width: thin;
+    scrollbar-color: #034D28 white;
+}
+
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 15px 30px;
+    box-shadow: 1px 1px 1px 1px rgba(32, 32, 32, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    z-index: 1000;
+}
+
+
+.logo {
+    max-height: 100px;
+}
+
+.search-bar {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    border: 2px solid #034D28;
+    padding: 5px 15px;
+    max-width: 600px;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 30px;
+    outline: none;
+    font-size: 16px;
+    color: #034D28;
+}
+
+.search-bar .search-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.search-bar .search-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.action-buttons {
+    margin-left: 2%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.login-button, .register-button {
+    background-color: transparent;
+    border: 2px solid #034D28;
+    color: #034D28;
+    padding: 8px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.login-button:hover {
+    background-color: #034D28;
+    color: white;
+}
+
+
+.register-button {
+    background-color: #034D28;
+    color: white;
+}
+
+.register-button:hover {
+    border: 2px solid #026c42;
+    background-color: #026c42;
+    color: white;
+}
+
+.cart-button, .language-button, .profile-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    width: 40px; 
+    height: 40px; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-button img, .language-button img, .profile-button img {
+    width: 40px;
+    height: 40px;
+}
+
+.dropdown-menu {
+    background-color: white;
+    border: 1px solid #034D28; 
+}
+
+.dropdown-item:hover {
+    background-color: #d8ecd5;
+}
+
+
+footer {
+    background-image: url('../img/footer.jpg');
+    background-size: cover;
+    z-index: 1;
+    position: absolute;
+    background-position: center; 
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 40px 20px;
+}
+
+.grupo-1 {
+    width: 100%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 45px 0px;
+}
+
+.grupo-1 .box1 figure {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; 
+}
+
+.grupo-1 .box1 figure img {
+    width: 100%; 
+}
+
+.grupo-1 .box1 h2 {
+    color: #034D28;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.grupo-1 .box2 h2 {
+    color: #034D28;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.grupo-1 .box4 h2 {
+    color: #034D28;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.grupo-1 .box1 p {
+    color: #034D28;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.grupo-1 .box2 p {
+    color: #034D28;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.grupo-1 .red-social {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.grupo-1 .red-social button {
+    width: 45px;
+    height: 45px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.grupo-1 .red-social button img {
+    width: 100%; 
+    height: auto;
+}
+
+.box1 {
+    grid-column: 1 / 3;
+    grid-row: 1 / 2;
+}
+
+.box2 {
+    padding-top: 40%;
+    padding-left: 10%;
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.box3 {
+    padding-top: 40%;
+    padding-left: 10%;
+    grid-column: 4;
+    grid-row: 1;
+}
+
+.box4 {
+    padding-left: 10%;
+    grid-column: 3 / 4;
+    grid-row: 2;
+    color: #bdbdbd;
+    font-size: 14px;
+}
+
+
+.carousel {
+    margin-top: 5%;
+    margin-inline: 5%;
+}
+
+.tit-linea {
+    font-family: Sanchez;
+    font-weight: Regular;
+    text-align: left;
+    margin-bottom: 0%;
+    padding-bottom: 0%;
+    
+}
+
+hr {
+    height: 2px;
+    border-color: #034D28;
+    background-color: #034D28;
+}
+
+.categories-section {
+    padding: 20px;
+}
+
+.category-item {
+    text-align: center;
+    margin: 5%;
+}
+
+.category-img {
+    width: 100%;         
+    aspect-ratio: 1/1;  
+    border-radius: 50%; 
+    object-fit: cover; 
+}
+
+h2 {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.5rem;
+    color: #4c6a50;
+    font-weight: bold;
+}
+
+h3 {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.2rem;
+    color: #4c6a50;
+}
+
+/* Estilos para el contenedor del login */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+
+h2 {
+    margin-bottom: 20px;
+    color: #034D28;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #034D28;
+    border-radius: 15px;
+    font-size: 14px;
+}
+
+.btn-login {
+    background-color: #034D28;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    width: 100%;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn-login:hover {
+    background-color: #026c42;
+}
+
+.forgot-password {
+    text-decoration: none;
+    margin: 15px 0;
+    color: #034D28;
+}
+
+.forgot-password:hover {
+    text-decoration: none;
+    margin: 15px 0;
+    color: #034D28;
+    text-decoration: underline;
+}
+
+.no-account {
+    margin: 15px 0;
+    font-weight: bold;
+    color: black;
+    
+}
+
+.btn-register {
+    text-decoration: none;
+    background-color: #034D28;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    width: 100%;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn-register:hover {
+    background-color: #026c42;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-form h2 {
+    color: #034D28;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #034D28;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #034D28;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+
+.auth-form input:focus {
+    border-color: #028c4f;
+}
+
+.auth-form button {
+    background-color: #034D28;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.auth-form button:hover {
+    background-color: #028c4f;
+}
+
+.auth-form p {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.auth-form a {
+    color: #034D28;
+    text-decoration: none;
+}
+
+.img-fondo img{
+    background-position: center; 
+    background-repeat: no-repeat;
+    width: 100%;
+}
+
+
+/* Estilos recuperar contraseña*/
+.subtit {
+    color: #034D28;
+    font-family: Roboto;
+    font-weight: Regular;
+    text-align: center;
+    margin-inline: 15%;
+}
+
+.forgot-password-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+
+/* Estilos generales de listas libros */
+.container-libros {
+    margin: 5%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 299px);
+    justify-content: center;
+    grid-gap: 0;
+}
+
+.listar-libros {
+    width: 299px;
+    height: 452px;
+    background: rgba(255,255,255,1);
+    opacity: 1;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    border: 1px solid rgba(3,77,40,1);
+    overflow: hidden;
+}
+
+.card-img-top {
+    width: 188px;
+    height: 285px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    opacity: 1;
+    position: absolute;
+    top: 19px;
+    left: 56px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+.title {
+    text-transform: uppercase;
+    width: 257px;
+    color: rgba(0,0,0,1);
+    position: absolute;
+    top: 325px;
+    left: 21px;
+    font-family: Sanchez;
+    font-weight: Regular;
+    font-size: 13px;
+    opacity: 1;
+    text-align: left;
+}
+
+.autor {
+    text-transform: uppercase;
+    width: 112px;
+    color: rgba(0,0,0,0.41999998688697815);
+    position: absolute;
+    margin-top: 6%;
+    top: 343px;
+    left: 21px;
+    font-family: Sanchez;
+    font-weight: Regular;
+    font-size: 13px;
+    opacity: 1;
+    text-align: left;
+}
+
+.precio-libro {
+    width: 44px;
+    color: rgba(3,77,40,1);
+    position: absolute;
+    margin-top: 6%;
+    top: 375px;
+    left: 21px;
+    font-family: Sanchez;
+    font-weight: Regular;
+    font-size: 13px;
+    opacity: 1;
+    text-align: left;
+}
+
+.divider {
+    margin-top: 320px;
+    width: 90%;
+    border: none; 
+    border-top: 2px solid #034D28;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .card-img-top {
+        height: 180px;
+    }
+}
+
+/* Recomendaciones */
+.recomendacion2 {
+    border-right: 1px solid #034D28;
+    border-left: 1px solid #034D28;
+}
+
+.tit {
+    color:#034D28;
+    margin-top: 5%;
+    margin-bottom: 0%;
+}
+
+.recomendacion p, .recomendacion2 p {
+    text-align: left;
+}
+
+.recomendacion img, .recomendacion2 img {
+    margin-top: 5% ;
+}
+
+.recomendacion a, .recomendacion2 a {
+    text-decoration: none;
+    color: black;
+}
+
+/*Autor, Genero y Libro*/
+.main-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #034D28;
+}
+
+
+.main-container input[type="text"],
+.main-container textarea, 
+.main-container select, 
+.main-container input[type="number"], 
+.main-container input[type="date"],
+.main-container input[type="file"]{
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #034D28;  
+    border-radius: 15px;  
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;  
+    background-color: #f8f8f8; 
+    color: #333;  
+    outline: none;  
+    transition: border-color 0.3s ease, background-color 0.3s ease; 
+    cursor: pointer;
+}
+
+
+.main-container input[type="text"]:focus, 
+.main-container textarea:focus, 
+.main-container input[type="number"]:focus, 
+.main-container input[type="date"]:focus, 
+.main-container select:focus {
+    border-color: #046B3C;  
+    background-color: #fff; 
+}
+
+.main-container input[type="file"] {
+    padding: 5px;  /* Ajusta el padding para que no se vea desproporcionado */
+    border-radius: 10px;  /* Menor borde redondeado para archivos */
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+.main-container textarea {
+    height: 150px; 
+    resize: vertical; 
+}
+
+.btn-submit {
+    background-color: #034D28;
+    color: white;
+}
+
+.btn-submit:hover {
+    background-color: #026c42;
+    color: white;
+}
+
+.btn-outline-personal {
+    color: #034D28;
+    border-color: #034D28;
+}
+
+.btn-outline-personal:hover {
+    color: white;
+    border-color: #034D28;
+    background-color: #034D28;
+}
+
+
+/*Sidebar*/
+.sidebar_nav {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 0;
+    left: 0;
+    background-color: #034D28;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.sidebar_nav a{
+    padding: 16px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    display: block;
+    text-align: justify;
+}
+
+.sidebar_nav a:hover{
+    color: #034D28;
+    font-weight: 700;
+    background-color: white;
+}
+
+.container-admin {
+    display: flex;
+    flex-direction: column;
+    min-height: 50vh;
+}
+
+.content {
+    flex: 1;
+}
+
+
+/* Detalles libro*/
+.container-autor {
+    width: 100%;
+    height: auto;
+    background-color: white;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    padding-top: 2%;
+    padding-inline: 7%;
+}
+
+.tit1 {
+    color: rgba(3,77,40,1);
+    font-family: Sanchez;
+    font-weight: Regular;
+    font-size: 32px;
+    text-align: center;
+}
+
+.container-autor img{
+    width: auto;
+    height: 224px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    grid-column: 1;
+}
+
+.container-autor p{
+    color: rgba(0,0,0,1);
+    font-family: Sedan;
+    font-weight: Regular;
+    font-size: 24px;
+    text-align: left;
+    grid-column: 2 / 3;
+}
+
+.tit2 {
+    color: rgba(0,0,0,1);
+    font-family: Sedan;
+    font-weight: Regular;
+    text-decoration: none;
+    font-size: 32px;
+    text-align: left;
+}
+
+.caja {
+    display: grid;
+    gap: 3%;
+    padding-bottom: 7%;
+}

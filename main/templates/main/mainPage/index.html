@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+{% if user.is_authenticated and user.is_staff %}
+    <div class="container-admin">
+        <div class="content">
+        <nav class="sidebar_nav">
+            <a href="{% url 'listar_autores' %}">Autores</a>
+            <a href="{% url 'listar_libros' %}">Libros</a>
+            <a href="{% url 'listar_generos' %}">Géneros</a>
+        </nav>
+        </div>
+    </div>
+{% else %}
+    <div class="caja-1">
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                <img src="{% static 'img/imagen1-carousel.png' %}" class="d-block w-100" alt="img1">
+                </div>
+                <div class="carousel-item">
+                <img src="{% static 'img/imagen1-carousel.png' %}" class="d-block w-100" alt="img2">
+                </div>
+                <div class="carousel-item">
+                <img src="{% static 'img/imagen1-carousel.png' %}" class="d-block w-100" alt="img3">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <section class="categories-section text-center my-5">
+            <h2 class="tit-linea">Más leídos</h2>
+            <hr class="linea">
+        </section>
+        <section class="categories-section text-center">
+            <h2 class="tit-linea">Categorías más destacadas</h2>
+            <hr class="linea">
+            <div class="container-categorias">
+                <div class="row justify-content-center">
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="category-item">
+                            <img src="{% static 'img/juvenil.png' %}" alt="Juvenil" class="img-fluid rounded-circle category-img">
+                            <h3 class="mt-2">Juvenil</h3>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="category-item">
+                            <img src="{% static 'img/infantil.png' %}" alt="Infantil" class="img-fluid rounded-circle category-img">
+                            <h3 class="mt-2">Infantil</h3>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="category-item">
+                            <img src="{% static 'img/ciencia.webp' %}" alt="Ciencia" class="img-fluid rounded-circle category-img">
+                            <h3 class="mt-2">Ciencia</h3>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="category-item">
+                            <img src="{% static 'img/historia.jpeg' %}" alt="Historia" class="img-fluid rounded-circle category-img">
+                            <h3 class="mt-2">Historia</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="categories-section text-center my-5">
+            <h2 class="tit-linea">Novedades</h2>
+            <hr class="linea">
+        </section>
+        <section class="categories-section text-center my-5">
+            <h2 class="tit-linea">Recomendaciones</h2>
+            <hr class="linea">
+            <div class="container-reco">
+                <div class="row">
+                    <div class="recomendacion col-md-4">
+                        <a href="https://www.ifema.es/noticias/educacion/beneficios-lectura-adultos-ninos" target="_blank"> 
+                            <img src="{% static 'img/recomendacion1.png' %}" alt="Recomendación 1" class="img-fluid">
+                            <p class="tit">Beneficios de la lectura en los niños</p>
+                            <p> La lectura es una de las actividades que los padres deberían incluir en la vida de sus hijos desde bien pequeños...</p>
+                        </a>
+                    </div>
+                    <div class="recomendacion2 col-md-4">
+                        <a href="https://www.educacionfpydeportes.gob.es/mc/sgctie/comunicacion/blog/2024/febrero2024/barometro-hab-lectura-2023.html#:~:text=La%20juventud%20contin%C3%BAa%20siendo%20el,de%20m%C3%A1s%20de%2065%20a%C3%B1os." target="_blank">
+                            <img src="{% static 'img/recomendacion2.png' %}" alt="Recomendación 2" class="img-fluid">
+                            <p class="tit">Los jóvenes a la cabeza en lectura entre la población...</p>
+                            <p>Así, el índice de lectores comprendidos entre los 14 y los 24 años alcanza el 74 %. Este porcentaje es del 65,8 % para el tramo de 25 a 65 años...</p>
+                        </a>
+                    </div>
+                    <div class="recomendacion col-md-4">
+                        <a href="https://wmagazin.com/relatos/los-primeros-premios-literarios-de-2024-del-nadal-comillas-y-alfaguara-a-la-espanola-finalista-al-hans-christian-andersen/" target="_blank">
+                            <img src="{% static 'img/recomendacion3.png' %}" alt="Recomendación 3" class="img-fluid">
+                            <p class="tit">Los primeros premios literarios de 2024</p>
+                            <p>Álvaro Pino, Sergio del Molino, Alana S. Portera, Clara N. Calatayud y Lucia Ramos, son algunos de los ganadores...</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="linea">    
+        </section>
+        <section class="categories-section text-center my-5">
+            <h2 class="tit-linea">Reserva de libros</h2>
+            <hr class="linea">
+        </section>
+        <section class="img-fondo">
+            <img src="{% static 'img/top10.png' %}" alt="top10">
+        </section>
+    </div>
+{% endif %}
+{% endblock %}

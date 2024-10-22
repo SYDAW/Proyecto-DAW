@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="auth-container">
+        <form method="post" action="{% url 'signin' %}" class="auth-form">
+            {% csrf_token %}
+            <h2>Crear cuenta</h2>
+
+            <!-- Mostrar errores no relacionados con campos específicos -->
+            <div class="form-group">
+                {{ form.non_field_errors }}
+            </div>
+
+            <!-- Campo de nombre de usuario con sus errores -->
+            <div class="form-group">
+                <label for="id_username">Nombre de usuario</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="text-danger">
+                        {{ form.username.errors }} 
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Campo de contraseña con sus errores -->
+            <div class="form-group">
+                <label for="id_password1">Contraseña</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div class="text-danger">
+                        {{ form.password1.errors }} 
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Campo de confirmación de contraseña con sus errores -->
+            <div class="form-group">
+                <label for="id_password2">Confirmar contraseña</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <div class="text-danger">
+                        {{ form.password2.errors }}  
+                    </div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Crear cuenta</button>
+        </form>
+    </div>
+{% endblock %}

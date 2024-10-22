@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="col-md-4">
+            <img src="{{ libro.imagen.url }}" alt="{{ libro.titulo }}" class="img-fluid" style="max-width: 100%;">
+        </div>
+
+        <div class="col-md-8">
+            <h1>{{ libro.titulo }}</h1>
+            <h3>{{ libro.autor.nombre }}</h3>
+            <p><strong>Precio:</strong> {{ libro.precio }}€</p>
+
+            <button class="btn btn-success">Añadir a la cesta</button>
+
+            <div>
+                <label>Formato: </label>
+                <input type="radio" name="formato" value="Fisico"> Físico
+                <input type="radio" name="formato" value="Digital"> Digital
+            </div>
+
+            <button class="btn btn-primary">Pedir prestamo</button>
+
+            <h4>Sinopsis</h4>
+            <p>{{ libro.descripcion }}</p>
+        </div>
+    </div>
+
+    <div class="container-autor">
+        <h1 class="tit1">Escrito por...</h1>
+        <div class="caja">
+            <img src="{{ libro.autor.imagen.url }}" alt="{{ libro.autor.nombre }}">
+            <h2 class="tit2">{{ libro.titulo }}</h2>
+            <p>{{ libro.autor.biografia }}</p>
+        </div> 
+    </div>
+{% endblock %}
