@@ -44,10 +44,8 @@ class Libro(models.Model):
     isbn = models.CharField(max_length=13, unique=True)
     fecha_publicacion = models.DateField()
     autor = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='libros', default=1)    
-    precio = models.DecimalField(max_digits=12, decimal_places=2)
     generos = models.ManyToManyField(Genero, related_name='libros')
     descripcion = models.TextField()    
-    formato = models.CharField(max_length=20, choices=[('Digital', 'Digital'), ('Físico', 'Físico')])
     disponibilidad = models.BooleanField(default=True)
     imagen = models.ImageField(upload_to="libros", null=True)
 
@@ -61,8 +59,9 @@ class Libro(models.Model):
 # Modelo LibroDigital
 class LibroDigital(models.Model):
     libro = models.OneToOneField(Libro, on_delete=models.CASCADE, related_name='digital')
-    formato = models.CharField(max_length=10)
-    enlace_descarga = models.URLField()
+    archivo = models.FileField(upload_to='libros_digitales/')
+    precio = models.DecimalField(max_digits=12, decimal_places=2)
+
 
     def __str__(self):
         return self.libro.titulo
@@ -75,6 +74,8 @@ class LibroDigital(models.Model):
 class LibroFisico(models.Model):
     libro = models.OneToOneField(Libro, on_delete=models.CASCADE, related_name='fisico')
     stock = models.PositiveIntegerField()
+    precio = models.DecimalField(max_digits=12, decimal_places=2)
+
 
     def __str__(self):
         return self.libro.titulo
@@ -146,7 +147,7 @@ class ItemCarrito(models.Model):
     cantidad = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f'{self.cantidad} x {self.libro.titulo}'
+        return f'{self.cantidad} x {self.producto.titulo}'
 
     class Meta:
         verbose_name_plural = "Items del Carrito"

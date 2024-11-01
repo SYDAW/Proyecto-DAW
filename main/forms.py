@@ -69,8 +69,35 @@ class AutorForm(forms.ModelForm):
             'imagen': forms.FileInput(attrs={'accept': 'image/*'}),
         }
 
+        def form_valid(self, form):
+            if form.is_valid():
+                form.save()  # Guarda el objeto si es válido
+                return super().form_valid(form)
+            else:
+                print(form.errors)  # Esto te permitirá ver los errores en la consola
+                return self.form_invalid(form)
+
 # Formulario Libro
 class LibroCreateForm(forms.ModelForm):
+    precio_digital = forms.DecimalField(
+        required=True,
+        label="Precio Digital",
+        max_digits=12,
+        decimal_places=2,
+    )
+
+    precio_fisico = forms.DecimalField(
+        required=True,
+        label="Precio Físico",
+        max_digits=12,
+        decimal_places=2,
+    )
+
+    archivo_digital = forms.FileField(
+        required=True,
+        label="Archivo Digital",
+    )
+
     class Meta:
         model = Libro
         fields = [
@@ -78,31 +105,53 @@ class LibroCreateForm(forms.ModelForm):
             'isbn', 
             'fecha_publicacion', 
             'autor', 
-            'precio', 
             'generos', 
             'descripcion', 
-            'formato', 
             'disponibilidad', 
-            'imagen'
+            'imagen', 
         ]
         labels = {
             'titulo': 'Título',
             'isbn': 'ISBN',
             'fecha_publicacion': 'Fecha de Publicación',
             'autor': 'Autor',
-            'precio': 'Precio',
             'generos': 'Géneros',
             'descripcion': 'Descripción',
-            'formato': 'Formato',
             'disponibilidad': 'Disponibilidad',
             'imagen': 'Imagen',
         }
         widgets = {
             'descripcion': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Descripción del libro'}),
             'fecha_publicacion': forms.DateInput(attrs={'type': 'date'}),
-            'precio': forms.NumberInput(attrs={'step': 0.01}),
             'imagen': forms.FileInput(attrs={'accept': 'image/*'}),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        archivo_digital = cleaned_data.get('archivo_digital')
+        precio_digital = cleaned_data.get('precio_digital')
+        precio_fisico = cleaned_data.get('precio_fisico')
+
+        if not archivo_digital:
+            self.add_error('archivo_digital', 'El archivo digital es obligatorio.')
+        if not precio_digital:
+            self.add_error('precio_digital', 'El precio para el formato digital es obligatorio.')
+        if not precio_fisico:
+            self.add_error('precio_fisico', 'El precio para el formato físico es obligatorio.')
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        libro = super().save(commit=commit)
+        archivo_digital = self.cleaned_data.get('archivo_digital')
+        precio_digital = self.cleaned_data.get('precio_digital')
+        precio_fisico = self.cleaned_data.get('precio_fisico')
+
+        # Crear instancias de LibroDigital y LibroFisico
+        LibroDigital.objects.create(libro=libro, archivo=archivo_digital, precio=precio_digital)
+        LibroFisico.objects.create(libro=libro, stock=10, precio=precio_fisico)
+
+        return libro
 
 
 # Formulario para libro fisico

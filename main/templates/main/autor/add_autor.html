@@ -4,22 +4,25 @@
 {% block content %}
   <div class="main-container">
     <h1>{% trans "Añadir Autor" %}</h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       
       <div class="form-group">
         <label for="name">{% trans "Nombre del Autor" %}</label>
         {{ form.nombre }}
+        {{ form.nombre.errors }}
       </div>
 
       <div class="form-group">
         <label for="bio">{% trans "Biografía" %}</label>
         {{ form.biografia }}
+        {{ form.biografia.errors }}
       </div>
 
       <div class="form-group">
         <label for="imagen">{% trans "Imagen" %}</label>
         {{ form.imagen }}
+        {{ form.imagen.errors }}
       </div>
 
       <div class="form-buttons">

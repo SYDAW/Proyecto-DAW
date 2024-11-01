@@ -1,3 +1,4 @@
+from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.contrib.auth import login
@@ -5,7 +6,16 @@ from django.views import View
 from django.views.generic import ListView, TemplateView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.views import LoginView, LogoutView
 from .forms import LibroCreateForm, LoginForm, RegistroForm, AutorForm, StockUpdateForm
-from .models import Libro, Autor, Genero, LibroFisico
+from .models import Carrito, ItemCarrito, Libro, Autor, Genero, LibroDigital, LibroFisico
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import AccessMixin, UserPassesTestMixin
+
+#Clase mixin que redirige al login
+class LoginRequiredMixin(AccessMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        return super().dispatch(request, *args, **kwargs)
 
 class IndexPage(TemplateView):
     template_name = 'main/mainPage/index.html'
@@ -75,6 +85,21 @@ class LibroDetailView(DetailView):
     template_name = 'main/mainPage/detalle_libro.html'
     context_object_name = 'libro'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        libro = self.get_object()
+
+        formato = self.request.GET.get('formato', 'Fisico')
+        context['formato_seleccionado'] = formato
+        context['precio'] = self.get_precio_by_formato(libro, formato)
+
+        return context
+
+    def get_precio_by_formato(self, libro, formato):
+        if formato == 'Digital':
+            return libro.digital.precio if libro.digital else 0
+        return libro.fisico.precio if libro.fisico else 0
+
 
 #Clase para listar autores
 class ListarAutorView(ListView):
@@ -103,6 +128,7 @@ class AutorCreateView(CreateView):
     success_url = reverse_lazy('listar_autores')  
 
     def form_valid(self, form):
+        form.instance.imagen = self.request.FILES.get('imagen')
         return super().form_valid(form)
 
 
@@ -182,6 +208,7 @@ class ListarLibroView(ListView):
         context = super().get_context_data(**kwargs)
         return context
 
+
 #Clase para añadir libro
 class LibroCreateView(CreateView):
     form_class = LibroCreateForm
@@ -189,11 +216,7 @@ class LibroCreateView(CreateView):
     success_url = reverse_lazy('listar_libros')  
 
     def form_valid(self, form):
-        libro = form.save()
-
-        if libro.formato == 'Físico':
-            LibroFisico.objects.create(libro=libro, stock=10)
-
+        #form.instance.imagen = self.request.FILES.get('imagen')
         return super().form_valid(form)
   
 
@@ -232,5 +255,106 @@ class DisminuirStockView(View):
     
 
 # Clase para carrito
-class CarritoPage(TemplateView):
+class CarritoPage(LoginRequiredMixin, ListView):
+    model = ItemCarrito
     template_name = 'main/cesta/carrito.html'
+    context_object_name = 'items'
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            carrito_usuario = Carrito.objects.filter(usuario=self.request.user).first()
+            if carrito_usuario:
+                return ItemCarrito.objects.filter(carrito=carrito_usuario)
+        return ItemCarrito.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Cálculo del total del carrito verificando si el producto es LibroFisico o LibroDigital
+        total_carrito = sum(
+            item.producto.precio * item.cantidad 
+            for item in context['items'] 
+            if isinstance(item.producto, (LibroFisico, LibroDigital))
+        )
+        
+        # Cálculo del total de productos
+        total_productos = sum(item.cantidad for item in context['items'])
+        
+        # Agregar al contexto
+        context['total_carrito'] = total_carrito
+        context['total_productos'] = total_productos
+        return context
+
+    
+#Clase para añadir producto a carrito
+class añadirLibroCarrito(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        libro = get_object_or_404(Libro, pk=self.kwargs['pk'])
+        
+        # Crear o conseguir el carrito del usuario
+        carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
+
+        # Crear o conseguir el item en el carrito solo con el objeto Libro
+        item_carrito, created = ItemCarrito.objects.get_or_create(
+            carrito=carrito,
+            producto=libro  # Referencia directa al modelo Libro
+        )
+
+        # Actualizar cantidad
+        if not created:
+            item_carrito.cantidad += 1
+        else:
+            item_carrito.cantidad = 1
+
+        item_carrito.save()
+
+        return redirect('carrito')
+
+
+
+# Clase para aumentar cantidad del producto en el carrito
+class AumentarProductoCarrito(View):
+    def post(self, request, pk):
+        item = get_object_or_404(ItemCarrito, pk=pk)
+        
+        if isinstance(item.producto, LibroFisico):
+            if item.cantidad < item.producto.fisico.stock:
+                item.cantidad += 1
+                item.save()
+            else:
+                pass
+        else:
+            item.cantidad += 1
+            item.save()
+
+        return redirect('carrito') 
+
+#Clase para restar producto en el carrito
+class RestarProductoCarrito(View):
+    def post(self, request, pk):
+        item = get_object_or_404(ItemCarrito, pk=pk)
+        
+        if item.cantidad > 1:
+            item.cantidad -= 1
+            item.save()
+        else:
+            item.delete()
+
+        return redirect('carrito')
+
+#Clase para eliminar un producto ya añadido a la compra
+class EliminarProductoCarrito(View):
+    def post(self, request, *args, **kwargs):
+        item_id = kwargs.get('pk')
+        item = get_object_or_404(ItemCarrito, pk=item_id, carrito__usuario=request.user)
+        item.delete()
+
+        return redirect('carrito')
+    
+#Clse para vaciar el carrito entero
+class LimpiarCarrito(View):
+    def post(self, request, *args, **kwargs):
+        carrito = Carrito.objects.get(usuario=request.user)
+        carrito.items.all().delete()
+
+        return redirect('carrito')

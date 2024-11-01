@@ -10,6 +10,7 @@ urlpatterns = [
     path('logout/', LogoutPage.as_view(), name='logout'),
     path('buscar-libros/', LibroSearchView.as_view(), name='buscar_libro'),
     path('libro/<int:pk>/', LibroDetailView.as_view(), name='detalle_libro'),
+    path('libro/<int:pk>/añadir-carrito/', añadirLibroCarrito.as_view(), name='añadir-carrito'),
     path('reset_password/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('reset_password_send/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
@@ -28,4 +29,9 @@ urlpatterns = [
     path('libros/delete/<int:pk>/', LibroDeleteView.as_view(), name='delete_libro'),
     path('libros/<int:libro_id>/aumentar_stock/', AumentarStockView.as_view(), name='aumentar_stock'),
     path('libros/<int:libro_id>/disminuir_stock/', DisminuirStockView.as_view(), name='disminuir_stock'),
+    path('carrito/', CarritoPage.as_view(), name='carrito'),
+    path('carrito/aumentar/<int:pk>/', AumentarProductoCarrito.as_view(), name='aumentar_producto_carrito'),
+    path('carrito/restar/<int:pk>/', RestarProductoCarrito.as_view(), name='restar_producto_carrito'),
+    path('carrito/eliminar/<int:pk>/', EliminarProductoCarrito.as_view(), name='eliminar-producto-carrito'),
+    path('carrito/limpiar/<int:pk>/', LimpiarCarrito.as_view(), name='limpiar-cesta')
 ]

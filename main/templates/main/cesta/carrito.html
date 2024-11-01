@@ -1,58 +1,93 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
-    <div class="alert alert-light mx-auto" role="alert">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="row" colspan="4" class="text-center">CARRITO</th>
-                </tr>
-                <tr>
-                    <th scope="col">PRODUCTO</th>
-                    <th scope="col">PRECIO</th>
-                    <th scope="col">CANTIDAD</th>
-                    <th scope="col">ACCIONES</th>
-                </tr>
-            </thead>
-            <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <div style="display: inline-block;">
-                        
-                            </div>
-                            <div style="display: inline-block; margin-left: 5px; margin-right: 5px;">
-                            </div>
-                            <div style="display: inline-block;">
-                                
-                            </div>
-                        </td>
-                        <td>
-                            
-                        </td>
-                    </tr>
-                {% endfor %}
-                {% else %}
-                <tr>
-                    <td colspan="4">
-                        <div class="alert alert-danger text-center">Carrito sin productos</div>
-                    </td>
-                </tr>
-                {% endif %}
-            <tr>
-                <th scope="row">Total:</th>
-                <td colspan="3">€</td>
-            </tr>
-            </tbody>
-        </table>
+<div class="wrapper">
+    <div class="cesta-container">
+        <div class="cesta-header">
+            <h3>Cesta</h3>
+            <form method="post" action="{% url 'limpiar-cesta' user.id %}">
+                {% csrf_token %}
+                <button type="submit" class="limpiar-cesta">Limpiar la cesta</button>
+            </form>
+        </div>
         <hr>
-        <div class="row justify-content-start">
-            <div class="col-6 col-sm-2">
-                
-            </div>
-            <div class="col-6 col-sm-2">
-            </div>
+
+        <div class="cesta-items">
+            {% if items %}
+                {% for item in items %}
+                <div class="producto">
+                    <div class="producto-imagen">
+                        <img src="{{ item.producto.imagen.url }}" alt="{{ item.producto.titulo }}">
+                    </div>
+
+                    <div class="producto-details">
+                        <div class="producto-info">
+                            <h4>{{ item.producto.titulo }}</h4>
+                            <p>por {{ item.producto.autor }}</p>
+                            <span class="producto-formato">Libro {{ item.producto.formato }}</span>
+                        </div>
+
+                        <div class="cantidad-eliminar-container">
+                            <div class="producto-cantidad">
+                                <form method="post" action="{% url 'restar_producto_carrito' pk=item.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-cantidad">
+                                        {% if item.cantidad == 1 %}
+                                            <img src="{% static 'img/eliminar.png' %}" alt="eliminar">
+                                        {% else %}
+                                            <img src="{% static 'img/menos.png' %}" alt="restar">
+                                        {% endif %}
+                                    </button>
+                                </form>
+
+                                <div class="cantidad-display">{{ item.cantidad }}</div>
+
+                                <form method="post" action="{% url 'aumentar_producto_carrito' pk=item.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-cantidad">
+                                        <img src="{% static 'img/mas.png' %}" alt="sumar">
+                                    </button>
+                                </form>
+                            </div>
+                            <form method="post" action="{% url 'eliminar-producto-carrito' item.id %}" class="borde-eliminar">
+                                {% csrf_token %}
+                                <button type="submit" class="producto-eliminar">Eliminar</button>
+                            </form>                            
+                        </div>
+                    </div>
+
+                    <!-- Mostrar el precio basado en el formato del libro -->
+                    <div class="producto-precio">
+                        <span>
+                            {% if item.producto.formato == "Físico" %}
+                                {{ item.producto.precio_fisico }}€
+                            {% elif item.producto.formato == "Digital" %}
+                                {{ item.producto.precio_digital }}€
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+            {% else %}
+                <p class="no-productos">No tienes productos en la cesta.</p>
+            {% endif %}
+        </div>
+
+        <div class="subtotal">
+            <span class="subtotal-texto">Subtotal ({{ total_productos }} productos):</span>
+            <span class="subtotal-precio">{{ total_carrito }} €</span>
         </div>
     </div>
+
+    <div class="tramitar-container">
+        <div class="boton-finalizar resumen-box">
+            <span class="subtotal-texto">Subtotal ({{ total_productos }} productos): </span>
+            <span class="subtotal-precio">{{ total_carrito }} €</span>
+            <a href="" class="btn-finalizar">Tramitar pedido</a>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

@@ -1,37 +1,86 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container">
-        <div class="col-md-4">
-            <img src="{{ libro.imagen.url }}" alt="{{ libro.titulo }}" class="img-fluid" style="max-width: 100%;">
-        </div>
-
-        <div class="col-md-8">
-            <h1>{{ libro.titulo }}</h1>
-            <h3>{{ libro.autor.nombre }}</h3>
-            <p><strong>Precio:</strong> {{ libro.precio }}€</p>
-
-            <button class="btn btn-success">Añadir a la cesta</button>
-
-            <div>
-                <label>Formato: </label>
-                <input type="radio" name="formato" value="Fisico"> Físico
-                <input type="radio" name="formato" value="Digital"> Digital
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('added')) {
+            alert("{{ libro.titulo }} se ha añadido a tu carrito.");
+        }
+    </script>
+    
+    <div class="libro-container">
+        <div class="row">
+            <div class="col">
+                <img src="{{ libro.imagen.url }}" alt="{{ libro.titulo }}" class="img-fluid" style="max-width: 100%;">
             </div>
 
-            <button class="btn btn-primary">Pedir prestamo</button>
+            <div class="col-6">
+                <span class="tit-Li">{{ libro.titulo }}</span><br>
+                <span class="tit-Au">{{ libro.autor.nombre }}</span>
+                <br><br>
+                <span class="sinopsis">Sinopsis</span>
+                <p class="descripcion">{{ libro.descripcion }}</p>
+            </div>
 
-            <h4>Sinopsis</h4>
-            <p>{{ libro.descripcion }}</p>
+            <div class="col">
+                <!-- Precio dinámico basado en el formato seleccionado -->
+                <span id="precio" class="precio">{{ precio }}€</span>
+
+                <form action="{% url 'añadir-carrito' libro.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-personal">Añadir a la cesta</button>
+                </form>
+
+                <!-- Botones para seleccionar el formato -->
+                <div class="btn-group-container">
+                    <form method="get" class="btn-group" role="group">
+                        <button type="submit" name="formato" value="Fisico" 
+                            class="btn-formato {% if formato_seleccionado == 'Fisico' %}active{% endif %}">
+                            Físico<br>
+                            {{ libro.fisico.precio }} €
+                        </button>
+                        <button type="submit" name="formato" value="Digital" 
+                            class="btn-formato {% if formato_seleccionado == 'Digital' %}active{% endif %}">
+                            Digital<br>
+                            {{ libro.digital.precio }} €
+                        </button>
+                    </form>
+                </div>
+                
+                <button class="btn-personal">Pedir prestamo</button>
+            </div>
         </div>
     </div>
 
     <div class="container-autor">
-        <h1 class="tit1">Escrito por...</h1>
-        <div class="caja">
-            <img src="{{ libro.autor.imagen.url }}" alt="{{ libro.autor.nombre }}">
-            <h2 class="tit2">{{ libro.titulo }}</h2>
-            <p>{{ libro.autor.biografia }}</p>
-        </div> 
+        <span class="tit-2">Escrito por...</span>
+        <div class="row">
+            <div class="col-md-3">
+                <img src="{{ libro.autor.imagen.url }}" alt="{{ libro.autor.nombre }}">
+            </div>
+            <div class="texto col-md-9">
+                <h3>{{ libro.autor.nombre }}</h3>
+                <p>{{ libro.autor.biografia|truncatewords:50 }}</p>
+                <a href="#" class="link">Ver más</a>
+            </div>
+        </div>
     </div>
+
+    <div class="container-reseñas">
+        <span class="tit-reseñas">Opiniones de clientes</span>
+        <hr>
+        {% for reseña in libro.reseñas.all %}
+        <div class="reseña">
+            <h4>{{ reseña.usuario }}</h4>
+            <p>{{ reseña.texto }}</p>
+            <p><strong>Puntuación:</strong> {{ reseña.puntuacion }} / 5</p>
+            <hr>
+        </div>
+        {% empty %}
+        <p>No hay reseñas para este libro aún.</p>
+        {% endfor %}
+    </div>
+
+
+     
 {% endblock %}

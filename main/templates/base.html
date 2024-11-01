@@ -40,9 +40,9 @@
                     <a href="{% url 'login' %}" class="login-button">Login</a>
                     <a href="{% url 'signin' %}" class="register-button">Register</a>
                 {% endif %}
-                <button class="cart-button">
+                <a class="cart-button" href="{% url 'carrito' %}">
                     <img src="{% static 'img/cesta.png' %}" alt="Cesta">
-                </button>
+                </a>
                 <button class="language-button">
                     <img src="{% static 'img/tierra.png' %}" alt="Tierra">
                 </button>
