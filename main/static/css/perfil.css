@@ -1,0 +1,276 @@
+.profile-container {
+    width: 90%; 
+    max-width: 1500px; 
+    min-width: 300px; 
+    margin: 15px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+
+.profile-card {
+    width: 90%;
+    max-width: 1000px; 
+    min-width: 300px;
+    background-color: #fff;
+    border: 1px solid #d1d1d1;
+    margin: 20px auto;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+
+.titulo-datos {
+    color:#034D28;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.edit-button {
+    font-size: 0.9rem;
+    color: #034D28;
+    text-decoration: none;
+    display: flex;
+    padding: 10px;
+    border-radius: 5px;
+    align-items: center;
+}
+
+.edit-button:hover {
+    background-color: #d1d1d1;
+}
+
+.edit-button svg{
+    margin-right: 5px;
+}
+
+.profile-card hr {
+    margin: 15px 0;
+    background-color: #d1d1d1;
+}
+
+.profile-header {
+    font-family: Sanchez;
+}
+
+.profile-content {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 5px; 
+    font-size: 1rem;
+    font-family: Sanchez;
+}
+
+.profile-content p {
+    display: contents;
+}
+
+.profile-content span{
+    margin-left: 40%;
+}
+
+.profile-content  {
+    text-align: left; 
+}
+
+/*Tarjetas*/
+.payment-container {
+    width: 90%; 
+    max-width: 1500px; 
+    min-width: 300px; 
+    margin: 15px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.8rem;
+    color: #333;
+}
+
+
+.payment-container .card {
+    background-color: #fff;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 1.5rem;
+}
+
+
+.payment-container .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #034D28;
+    text-align: left;
+}
+
+.payment-container .card-subtitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.payment-container .card-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.payment-container hr {
+    margin: 15px 0;
+    background-color: #d1d1d1;
+}
+
+
+.divider {
+    margin: 20px 0;
+}
+
+
+.card-logos img {
+    margin-left: 10px;
+}
+
+.form-tarjeta {
+    display: grid;
+    gap: 1rem;
+}
+
+.form-label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.error-text {
+    color: #ff0000;
+    font-size: 0.9rem;
+}
+
+.no-hay {
+    color: #d1d1d1;
+    font-size: 1.3rem;
+    text-align: left;
+}
+
+.tarjetas-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: left;
+}
+
+.tarjeta-card {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    width: 250px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tarjeta-info {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.numero-tarjeta {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.tipo-tarjeta,
+.saldo-tarjeta {
+    font-size: 0.9em;
+    color: #555;
+    margin: 3px 0;
+}
+
+.tarjeta-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-edit,
+.btn-delete {
+    padding: 5px 10px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-edit {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-delete {
+    background-color: #f44336;
+    color: white;
+}
+
+
+/*Alert*/
+.alert-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+}
+
+.alert {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #d4edda; /* Verde claro, ajusta según sea necesario */
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.btn-close {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    color: #155724;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.btn-close:hover {
+    color: #f00; /* Cambia el color al pasar el ratón si lo deseas */
+}
+
+/*Mis compras*/

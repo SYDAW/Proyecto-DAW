@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="payment-container">
+    <h2>Editar direccion</h2>
+    <form method="post" class="form-direccion">
+        {% csrf_token %}
+
+        <!-- Calle -->
+        <div class="form-group">
+            <label for="calle">Calle*</label>
+            {{ form.calle }}
+            {% if form.calle.errors %}
+                <div class="error">
+                    {% for error in form.calle.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Ciudad -->
+        <div class="form-group">
+            <label for="ciudad">Ciudad*</label>
+            {{ form.ciudad }}
+            {% if form.ciudad.errors %}
+                <div class="error">
+                    {% for error in form.ciudad.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- País -->
+        <div class="form-group">
+            <label for="pais">País*</label>
+            {{ form.pais }}
+            {% if form.estado.errors %}
+                <div class="error">
+                    {% for error in form.estado.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Código Postal -->
+        <div class="form-group">
+            <label for="codigo_postal">Código Postal*</label>
+            {{ form.codigo_postal }}
+            {% if form.codigo_postal.errors %}
+                <div class="error">
+                    {% for error in form.codigo_postal.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-success">Guardar cambios</button>
+            <a href="{% url 'ver_direcciones' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

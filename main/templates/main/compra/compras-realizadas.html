@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-admin">
+    <div class="content">
+        <nav class="sidebar_nav">
+            <div class="menu-section">
+                <p class="menu-title">Mi cuenta</p>
+                <a href="{% url 'perfil' %}" >Mis datos</a>
+                <a href="{% url 'ver_tarjetas' %}">Mis formas de pago</a>
+                <a href="{% url 'ver_direcciones' %}">Mis direcciones</a>
+            </div>
+            <div class="menu-section">
+                <p class="menu-title">Mis actividades</p>
+                <a href="">Mis reseñas</a>
+                <a href="">Mis reservas</a>
+                <a href="{% url 'compras_realizadas' %}">Mis compras</a>            
+            </div>
+        </nav>
+    </div>
+</div>
+<div class="container-cosas">
+    <div class="profile-container">
+        <h2>Mis Compras</h2>
+        <table class="pedido-tabla">
+           <tbody>
+            {% for detalle in detalles %}
+            <tr>
+                <td>
+                    <img src="{{ detalle.producto.imagen.url }}" alt="{{ detalle.producto.titulo }}" class="imagen-checkout">
+                </td>
+                <td>{{ detalle.producto.titulo }}</td>
+                <td>{{ detalle.compra.fecha }}</td>
+                <td>
+                    <a href="{% url 'detalle_compra' detalle.compra.pk %}" class="btn btn-success">Ver Detalles</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No has realizado ninguna compra.</td>
+            </tr>
+            {% endfor %}
+        </tbody> 
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -248,7 +248,7 @@ footer {
     
 }
 
-hr {
+.linea {
     height: 2px;
     border-color: #034D28;
     background-color: #034D28;
@@ -541,7 +541,7 @@ h2 {
     text-align: left;
 }
 
-.divider {
+.hr-libros {
     margin-top: 320px;
     width: 90%;
     border: none; 
@@ -605,6 +605,7 @@ h1 {
 .main-container select, 
 .main-container input[type="number"], 
 .main-container input[type="date"],
+.main-container input[type="email"],
 .main-container input[type="file"]{
     width: 100%;
     padding: 10px;
@@ -621,6 +622,7 @@ h1 {
 
 
 .main-container input[type="text"]:focus, 
+.main-container input[type="email"]:focus, 
 .main-container textarea:focus, 
 .main-container input[type="number"]:focus, 
 .main-container input[type="date"]:focus, 
@@ -665,40 +667,62 @@ h1 {
 
 /*Sidebar*/
 .sidebar_nav {
-    height: 100%;
+    height: calc(100vh - 20px);
     width: 160px;
     position: fixed;
     z-index: 0;
     left: 0;
     background-color: #034D28;
     overflow-x: hidden;
-    padding-top: 20px;
+    overflow-y: auto;
+    padding: 20px;
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+.sidebar_nav .menu-section {
+    margin-bottom: 20px;
+}
+
+.sidebar_nav .menu-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #FFFFFF;
 }
 
 .sidebar_nav a{
-    padding: 16px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
     display: block;
-    text-align: justify;
+    padding: 8px 16px;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 0;
+    border-radius: 5px;
 }
 
 .sidebar_nav a:hover{
-    color: #034D28;
-    font-weight: 700;
-    background-color: white;
+    background-color: #13854c;
 }
 
 .container-admin {
     display: flex;
-    flex-direction: column;
-    min-height: 50vh;
+    margin-left: 160px;
+    
 }
 
 .content {
-    flex: 1;
+    width: 100%;
 }
+
+.container-cosas {
+    margin-top: 10px;
+    margin-left: 180px; 
+    padding: 20px;
+    max-width: calc(100% - 180px); 
+    box-sizing: border-box;
+}
+
+
 
 
 /* Detalles libro*/
@@ -805,6 +829,7 @@ h1 {
     padding: 20px;
     padding-bottom: 30px;
     margin-top: 40px;
+    padding-inline: 10%;
     text-align: center;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -859,38 +884,110 @@ h1 {
     padding: 20px;
 }
 
+.reseña-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .tit-reseñas {
     color: #034D28;
     font-family: Sanchez;
     font-weight: Regular;
     font-size: 25px;
-    text-align: left;
+}
+
+.media {
+    font-family: Sanchez;
+    color: #034D28;
+    font-size: 30px;
+}
+
+.reseña-sub {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text-right-custom {
+    color: #868686;
+    font-family: Sanchez;
 }
 
 .reseña {
-    background-color: #fff;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    border: 1px solid #e0e0e0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding-top: 5px;
+    padding-bottom: 5px;
+
 }
 
-.reseña h4 {
+.one {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.one p{
+    font-family: Scope One;
+    color: #515151;
+    font-size: 15px;
+    margin-top: none;
+}
+
+.two {
+    grid-column: 2 / 4;
+    grid-row: 1;
+}
+
+.one h4 {
     font-size: 18px;
-    color: #4c6a50;
-    margin-bottom: 10px;
+    margin-bottom: none;
+    font-family: Scope One;
 }
 
-.reseña p {
+.two p {
     font-size: 16px;
-    color: #333;
+    font-family: Scope One;
     margin-bottom: 5px;
 }
 
-.container-reseñas hr {
+.container-reseñas hr-libros {
     margin-top: 1%;
     border: 2px solid #034D28;
     color: #034D28;
+}
+
+.puntuacion-estrellas {
+    display: flex; /* Alinea las imágenes horizontalmente */
+    justify-content: flex-start; /* Alinea las imágenes a la izquierda */
+    align-items: center; /* Centra las imágenes verticalmente */
+    margin-bottom: 10px; /* Espacio inferior opcional */
+}
+
+.estrella {
+    width: 100px; /* Ajusta el ancho de la imagen */
+    height: auto; /* Mantiene la proporción de la imagen */
+    margin-right: 5px; /* Espacio entre las imágenes */
+}
+
+
+.ver-reseñas {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    margin-top: 20px;
+}
+
+.btn-ver-reseñas {
+    padding: 10px 20px;
+    background-color: #034D28;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn-ver-reseñas:hover {
+    background-color: #026f1c;
 }
 
 
@@ -1166,4 +1263,45 @@ h1 {
 
 .btn-formato.active {
     border: 2px solid rgb(255, 230, 0);
+}
+
+.checkout-container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.detalle-pedido {
+    margin: 20px 0;
+}
+
+.pedido-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.pedido-tabla td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.imagen-checkout {
+    width: 80px;
+    height: auto;
+    object-fit: cover;
+}
+
+.total-carrito {
+    text-align: right;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 2%;
 }

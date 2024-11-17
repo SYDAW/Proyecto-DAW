@@ -11,3 +11,7 @@ psycopg2-binary
 #production ready
 # psycopg2
 pillow
+
+Flask==3.0.3
+paypal-server-sdk==0.5.2
+

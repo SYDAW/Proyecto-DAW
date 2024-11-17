@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="container-admin">
+    <div id="message-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1050;">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="content">
+        <nav class="sidebar_nav">
+            <div class="menu-section">
+                <p class="menu-title">Mi cuenta</p>
+                <a href="{% url 'perfil' %}" >Mis datos</a>
+                <a href="{% url 'ver_tarjetas' %}">Mis formas de pago</a>
+                <a href="{% url 'ver_direcciones' %}">Mis direcciones</a>
+            </div>
+            <div class="menu-section">
+                <p class="menu-title">Mis actividades</p>
+                <a href="">Mis reseñas</a>
+                <a href="">Mis reservas</a>
+                <a href="{% url 'compras_realizadas' %}">Mis compras</a>            
+            </div>
+        </nav>
+    </div>
+</div>
+<div class="container-cosas">
+    <div class="profile-container">
+        <h1>Mis Datos</h1>
+
+        <div class="profile-card">
+            <div class="profile-header">
+                <p class="titulo-datos">Datos personales y de contacto</p>
+                <a href="{% url 'editar_perfil' %}" class="edit-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                    </svg> EDITAR
+                </a>
+            </div>
+            <hr>
+            <div class="profile-content">
+                <p>Nombre: <span><strong>{{ user.first_name|default:"-" }}</strong></span></p>
+                <p>Apellidos: <span><strong>{{ user.last_name|default:"-" }}</strong></span></p>
+                <p>Nombre de usuario: <span><strong>{{ user.username|default:"-" }}</strong></span></p>
+                <p>Email: <span><strong>{{ user.email|default:"-" }}</strong></span></p>
+            </div>
+        </div>
+
+        <div class="profile-card">
+            <p class="titulo-datos" style="text-align: left;">Datos de acceso</p>
+            <hr>
+            <form method="post" class="form-contraseña" action="{% url 'perfil' %}">
+                {% csrf_token %}
+            
+                <!-- Contraseña actual -->
+                <div class="form-group">
+                    <label for="old_password">Contraseña actual*</label>
+                    {{ password_form.old_password }}
+                    {% if password_form.old_password.errors %}
+                        <div class="error">
+                            {% for error in password_form.old_password.errors %}
+                                <p class="text-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            
+                <!-- Nueva contraseña -->
+                <div class="form-group">
+                    <label for="new_password1">Nueva contraseña*</label>
+                    {{ password_form.new_password1 }}
+                    {% if password_form.new_password1.errors %}
+                        <div class="error">
+                            {% for error in password_form.new_password1.errors %}
+                                <p class="text-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            
+                <!-- Confirmar nueva contraseña -->
+                <div class="form-group">
+                    <label for="new_password2">Confirmar nueva contraseña*</label>
+                    {{ password_form.new_password2 }}
+                    {% if password_form.new_password2.errors %}
+                        <div class="error">
+                            {% for error in password_form.new_password2.errors %}
+                                <p class="text-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            
+                <button type="submit" class="btn btn-success">Cambiar contraseña</button>
+            </form>
+        </div>
+</div>
+{% endblock %}

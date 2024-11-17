@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% block content %}
+<div class="container-reseñas">
+    <div class="reseña-header">
+        <span class="tit-reseñas">Opiniones de clientes</span>
+        <span class="media">{{ media_valoraciones }}/5</span>
+    </div>
+    <hr>
+    <div class="reseña-sub">
+        <span>-</span>
+        <figcaption class="text-right-custom">{{ cantidad_valoraciones }} {% trans "comentarios de usuarios" %}</figcaption>
+    </div>
+    <hr>
+    {% for reseña in reseñas %}
+    <div class="reseña">
+        <div class="one">
+            <h4>{{ reseña.usuario }}</h4>
+            <p>{{ reseña.fecha|date:"d/m/Y" }}</p>
+        </div>
+        <div class="two">
+            <div class="puntuacion-estrellas">
+                {% if reseña.valoracion == 5 %}
+                    <img src="{% static 'img/estrellas/5-estrellas.png' %}" alt="5 estrellas" class="estrella">
+                {% elif reseña.valoracion == 4 %}
+                    <img src="{% static 'img/estrellas/4-estrellas.png' %}" alt="4 estrellas" class="estrella">
+                {% elif reseña.valoracion == 3 %}
+                    <img src="{% static 'img/estrellas/3-estrellas.png' %}" alt="3 estrellas" class="estrella">
+                {% elif reseña.valoracion == 2 %}
+                    <img src="{% static 'img/estrellas/2-estrellas.png' %}" alt="2 estrellas" class="estrella">
+                {% elif reseña.valoracion == 1 %}
+                    <img src="{% static 'img/estrellas/1-estrellas.png' %}" alt="1 estrella" class="estrella">
+                {% endif %}
+            </div>
+            <p>{{ reseña.comentario }}</p>
+        </div>
+    </div>
+    <hr>
+    {% empty %}
+    <p>No hay reseñas para este libro aún.</p>
+    {% endfor %}
+</div>
+{% endblock %}

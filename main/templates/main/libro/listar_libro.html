@@ -3,7 +3,16 @@
 {% load i18n %}
 
 {% block content %}
-    <div class="container my-4">
+    <div class="container-admin">
+        <div class="content">
+        <nav class="sidebar_nav">
+            <a href="{% url 'listar_autores' %}">Autores</a>
+            <a href="{% url 'listar_libros' %}">Libros</a>
+            <a href="{% url 'listar_generos' %}">Géneros</a>
+        </nav>
+        </div>
+    </div>
+    <div class="container-cosas">
         <h1>{% trans "Libros" %}</h1>
 
         <!-- Formulario de búsqueda -->

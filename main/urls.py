@@ -11,6 +11,7 @@ urlpatterns = [
     path('buscar-libros/', LibroSearchView.as_view(), name='buscar_libro'),
     path('libro/<int:pk>/', LibroDetailView.as_view(), name='detalle_libro'),
     path('libro/<int:pk>/añadir-carrito/', añadirLibroCarrito.as_view(), name='añadir-carrito'),
+    path('libro/<int:pk>/reseñas/', VerReseñas.as_view(), name='ver_reseñas'),
     path('reset_password/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('reset_password_send/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
@@ -33,5 +34,17 @@ urlpatterns = [
     path('carrito/aumentar/<int:pk>/', AumentarProductoCarrito.as_view(), name='aumentar_producto_carrito'),
     path('carrito/restar/<int:pk>/', RestarProductoCarrito.as_view(), name='restar_producto_carrito'),
     path('carrito/eliminar/<int:pk>/', EliminarProductoCarrito.as_view(), name='eliminar-producto-carrito'),
-    path('carrito/limpiar/<int:pk>/', LimpiarCarrito.as_view(), name='limpiar-cesta')
-]
+    path('carrito/limpiar/<int:pk>/', LimpiarCarrito.as_view(), name='limpiar-cesta'),
+    path('perfil/', PerfilView.as_view(), name='perfil'),
+    path('perfil/editar/', EditarPerfilView.as_view(), name='editar_perfil'),
+    path('perfil/direccion/', DireccionListCreateView.as_view(), name='ver_direcciones'),
+    path('perfil/direccion/<int:pk>/editar/', DireccionUpdateView.as_view(), name='editar_direccion'),
+    path('perfil/direccion/<int:pk>/eliminar/', DireccionDeleteView.as_view(), name='eliminar_direccion'),
+    path('perfil/tarjetas/', TarjetaListCreateView.as_view(), name='ver_tarjetas'),
+    path('perfil/tarjeta/<int:pk>/editar/', TarjetaUpdateView.as_view(), name='editar_tarjeta'),
+    path('perfil/tarjeta/<int:pk>/eliminar/', TarjetaDeleteView.as_view(), name='eliminar_tarjeta'),
+    path('checkout/', CheckoutView.as_view(), name='checkout'),
+    path('checkout/confirmacion-compra/<int:pk>/', ConfirmacionCompraView.as_view(), name='confirmacion_compra'),
+    path('mis-compras/', ComprasRealizadasView.as_view(), name='compras_realizadas'),
+    path('mis-compras/detalle/<int:pk>', DetalleCompraView.as_view(), name='detalle_compra'),
+] 

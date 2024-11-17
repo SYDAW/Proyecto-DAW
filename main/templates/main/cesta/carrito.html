@@ -25,7 +25,7 @@
                         <div class="producto-info">
                             <h4>{{ item.producto.titulo }}</h4>
                             <p>por {{ item.producto.autor }}</p>
-                            <span class="producto-formato">Libro {{ item.producto.formato }}</span>
+                            <span class="producto-formato">Libro {{ item.formato }}</span>
                         </div>
 
                         <div class="cantidad-eliminar-container">
@@ -60,10 +60,10 @@
                     <!-- Mostrar el precio basado en el formato del libro -->
                     <div class="producto-precio">
                         <span>
-                            {% if item.producto.formato == "Físico" %}
-                                {{ item.producto.precio_fisico }}€
-                            {% elif item.producto.formato == "Digital" %}
-                                {{ item.producto.precio_digital }}€
+                            {% if item.formato == "Fisico" %}
+                                {{ item.producto.fisico.precio }}€
+                            {% elif item.formato == "Digital" %}
+                                {{ item.producto.digital.precio }}€
                             {% endif %}
                         </span>
                     </div>
@@ -85,7 +85,7 @@
         <div class="boton-finalizar resumen-box">
             <span class="subtotal-texto">Subtotal ({{ total_productos }} productos): </span>
             <span class="subtotal-precio">{{ total_carrito }} €</span>
-            <a href="" class="btn-finalizar">Tramitar pedido</a>
+            <a href="{% url 'checkout' %}" class="btn-finalizar">Tramitar pedido</a>
         </div>
     </div>
 </div>

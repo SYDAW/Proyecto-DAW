@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="main-container">
+    <h2>Detalle de Compra</h2>
+    <p><strong>Fecha:</strong> {{ compra.fecha }}</p>
+    <p><strong>Total:</strong> {{ compra.total_compra }} €</p>
+    <p><strong>Dirección de Envío:</strong> {{ compra.direccion_envio.calle }}, {{ compra.direccion_envio.ciudad }}</p>
+    <p><strong>Tarjeta de Pago:</strong> **** {{ compra.tarjeta_compra.numero|slice:"-4:" }}</p>
+
+    <h3>Productos Comprados:</h3>
+    <table class="pedido-tabla">
+        <tbody>
+            {% for detalle in detalles %}
+            <tr>
+                <td>
+                    <img src="{{ detalle.producto.imagen.url }}" alt="{{ detalle.producto.titulo }}" class="imagen-checkout">
+                </td>
+                <td>{{ detalle.producto.titulo }}</td>
+                <td>{{ detalle.formato }}</td>
+                <td>{{ detalle.cantidad }} Ud.</td>
+                <td>{{ detalle.precio_unitario }}€</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'compras_realizadas' %}" class="btn btn-primary">Volver a Mis Compras</a>
+</div>
+{% endblock %}

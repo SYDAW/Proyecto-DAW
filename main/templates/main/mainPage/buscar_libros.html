@@ -6,7 +6,7 @@
             {% for libro in libros %}
                 <a href="{% url 'detalle_libro' libro.id %}" class="listar-libros" style="text-decoration: none; color: inherit;">
                     <img src="{{ libro.imagen.url }}" class="card-img-top" alt="{{ libro.titulo }}">
-                    <hr class="divider">
+                    <hr class="hr-libros">
                     <span class="title">{{ libro.titulo }}</span>
                     <span class="autor">{{ libro.autor.nombre }}</span>
                     <span class="precio-libro">{{ libro.fisico.precio }}€</span>
@@ -14,7 +14,7 @@
             {% endfor %}
         {% else %}
             <div class="alert alert-warning" role="alert">
-                No se encontraron resultados.
+                No se encontraron resultados para "{{ request.GET.q }}".
             </div>
         {% endif %}
     </div>

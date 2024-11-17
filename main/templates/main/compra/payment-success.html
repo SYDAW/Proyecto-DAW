@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="main-container">
+    <div class="success-message">
+        <h2>¡Pago Realizado con Éxito!</h2>
+        <p>Gracias por tu compra, {{ compra.usuario.first_name }}.</p>
+        <p>Tu pedido será enviado a la dirección: {{ compra.direccion_envio.calle }}, {{ compra.direccion_envio.ciudad }}.</p>
+    </div>
+
+    <div class="detalle-pedido">
+        <h3>Detalles del Pedido</h3>
+        <table class="pedido-tabla">
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <img src="{{ item.producto.imagen.url }}" alt="{{ item.producto.titulo }}" class="imagen-checkout">
+                    </td>
+                    <td>{{ item.producto.titulo }}</td>
+                    <td>{{ item.formato }}</td>
+                    <td>{{ item.cantidad }} Ud.</td>
+                    <td>{{ item.precio_unitario }}€</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p><strong>Total pagado:</strong> {{ compra.total_compra }}€</p>
+    </div>
+
+    <div class="btn-volver">
+        <a href="{% url 'index' %}" class="btn btn-success">Ir a la página de inicio</a>
+    </div>
+</div>
+{% endblock %}

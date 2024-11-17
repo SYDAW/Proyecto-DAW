@@ -113,13 +113,31 @@ class Reserva(models.Model):
         verbose_name_plural = "Reservas"
 
 
+# Modelo Tarjeta
+class Tarjeta(models.Model):
+    TIPO_CHOICES = [
+        ('debito', 'Débito'),
+        ('credito', 'Crédito'),
+    ]
+
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tarjeta')
+    titular = models.CharField(max_length=100)
+    numero = models.CharField(max_length=16, unique=True)
+    tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)
+    saldo = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    caducidad = models.DateField()
+
+    def __str__(self):
+        return f'{self.numero} - {self.usuario.username}'
+
+
 # Modelo Compra
 class Compra(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='compras')
     fecha = models.DateField(auto_now_add=True)
     total_compra = models.DecimalField(max_digits=12, decimal_places=2)
     direccion_envio = models.ForeignKey(Direccion, on_delete=models.PROTECT, related_name='compras')
-    carrito = models.OneToOneField('Carrito', on_delete=models.PROTECT, null=True, blank=True, related_name='compra')
+    tarjeta_compra =  models.ForeignKey(Tarjeta, on_delete=models.PROTECT, related_name='compras')
 
     def __str__(self):
         return f'{self.usuario.username} - {self.fecha}'
@@ -127,6 +145,17 @@ class Compra(models.Model):
     class Meta:
         verbose_name_plural = "Compras"
 
+
+# Modelo detalle de compra
+class DetalleCompra(models.Model):
+    compra = models.ForeignKey(Compra, on_delete=models.CASCADE, related_name='detalles')
+    producto = models.ForeignKey(Libro, on_delete=models.PROTECT) 
+    formato = models.CharField(max_length=20, choices=[("Fisico", "Físico"), ("Digital", "Digital")])
+    cantidad = models.PositiveIntegerField()
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.producto.titulo} - {self.cantidad} x {self.precio_unitario}€"
 
 
 # Modelo Carrito
@@ -142,15 +171,22 @@ class Carrito(models.Model):
 
 # Modelo ItemCarrito
 class ItemCarrito(models.Model):
+    FORMATO_CHOICES = [
+        ('Fisico', 'Físico'),
+        ('Digital', 'Digital'),
+    ]
+
     carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE, related_name='items')
     producto = models.ForeignKey(Libro, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(default=1)
+    formato = models.CharField(max_length=10, choices=FORMATO_CHOICES)
 
     def __str__(self):
-        return f'{self.cantidad} x {self.producto.titulo}'
+        return f'{self.cantidad} x {self.producto.titulo} ({self.formato})'
 
     class Meta:
         verbose_name_plural = "Items del Carrito"
+
 
 
 # Modelo Reseña

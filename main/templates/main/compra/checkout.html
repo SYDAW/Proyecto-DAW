@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="checkout-container">
+    <h2>Proceso de Pago</h2>
+
+    <div class="detalle-pedido">
+        <table class="pedido-tabla">
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <!-- Columna de Imagen -->
+                    <td>
+                        <img src="{{ item.producto.imagen.url }}" alt="{{ item.producto.titulo }}" class="imagen-checkout">
+                    </td>
+
+                    <!-- Columna de Producto y Formato -->
+                    <td>{{ item.producto.titulo }} <br> ({{ item.formato }})</td>
+
+                    <!-- Columna de Cantidad -->
+                    <td>{{ item.cantidad }} Ud.</td>
+
+                    <!-- Columna de Precio Unitario -->
+                    <td>
+                        {% if item.formato == "Fisico" %}
+                            {{ item.producto.fisico.precio }}€
+                        {% elif item.formato == "Digital" %}
+                            {{ item.producto.digital.precio }}€
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+        <p class="total-carrito"><strong>Total:</strong> {{ total_carrito }} €</p>
+    </div>
+    <hr>
+
+    <form method="POST" action="{% url 'checkout' %}" class="form-checkout">
+        {% csrf_token %}
+        
+        <!-- Seleccionar Dirección -->
+        <div class="form-group">
+            <label for="direccion">{% trans "Dirección de envío" %}</label>
+            {{ form.direccion }}
+        </div>
+
+        <!-- Seleccionar Tarjeta -->
+        <div class="form-group">
+            <label for="tarjeta">{% trans "Tarjeta de pago" %}</label>
+            {{ form.tarjeta }}
+        </div>
+
+        <button type="submit" class="btn btn-success">Confirmar Compra</button>
+    </form>
+</div>
+{% endblock %}

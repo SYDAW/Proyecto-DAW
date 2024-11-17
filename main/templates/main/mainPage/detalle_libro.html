@@ -1,13 +1,26 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
+{% load static %}
 {% block content %}
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('added')) {
-            alert("{{ libro.titulo }} se ha añadido a tu carrito.");
+        function selectFormato(button) {
+            // Cambiar el formato seleccionado
+            const formatoSeleccionado = button.value;
+            document.getElementById('formato-seleccionado').value = formatoSeleccionado;
+
+            // Cambiar la clase activa en los botones
+            document.querySelectorAll('.btn-formato').forEach(btn => {
+                btn.classList.remove('active'); // Eliminar clase activa de todos
+            });
+            button.classList.add('active'); // Añadir clase activa al botón clicado
+
+            // Cambiar el precio mostrado
+            const precioElement = document.getElementById('precio');
+            const precio = button.getAttribute('data-precio'); // Obtener el precio del atributo data
+            precioElement.textContent = precio + "€"; // Actualizar el texto del precio
         }
     </script>
-    
+
     <div class="libro-container">
         <div class="row">
             <div class="col">
@@ -28,24 +41,26 @@
 
                 <form action="{% url 'añadir-carrito' libro.id %}" method="post">
                     {% csrf_token %}
+                
+                    <input type="hidden" name="formato" id="formato-seleccionado" value="Fisico"> <!-- Campo oculto para el formato -->
+                    
                     <button type="submit" class="btn-personal">Añadir a la cesta</button>
-                </form>
 
-                <!-- Botones para seleccionar el formato -->
-                <div class="btn-group-container">
-                    <form method="get" class="btn-group" role="group">
-                        <button type="submit" name="formato" value="Fisico" 
-                            class="btn-formato {% if formato_seleccionado == 'Fisico' %}active{% endif %}">
-                            Físico<br>
-                            {{ libro.fisico.precio }} €
-                        </button>
-                        <button type="submit" name="formato" value="Digital" 
-                            class="btn-formato {% if formato_seleccionado == 'Digital' %}active{% endif %}">
-                            Digital<br>
-                            {{ libro.digital.precio }} €
-                        </button>
-                    </form>
-                </div>
+                    <!-- Botones para seleccionar el formato -->
+                    <div class="btn-group-container">
+                        <div class="btn-group">
+                            <button type="button" name="formato" value="Fisico" 
+                                class="btn-formato {% if formato_seleccionado == 'Fisico' %}active{% endif %}" 
+                                data-precio="{{ libro.fisico.precio }}" 
+                                onclick="selectFormato(this)">Físico<br>{{ libro.fisico.precio }} €</button>
+                        
+                            <button type="button" name="formato" value="Digital" 
+                                    class="btn-formato {% if formato_seleccionado == 'Digital' %}active{% endif %}" 
+                                    data-precio="{{ libro.digital.precio }}" 
+                                    onclick="selectFormato(this)">Digital<br>{{ libro.digital.precio }} €</button>
+                        </div>
+                    </div>
+                </form>
                 
                 <button class="btn-personal">Pedir prestamo</button>
             </div>
@@ -67,20 +82,49 @@
     </div>
 
     <div class="container-reseñas">
-        <span class="tit-reseñas">Opiniones de clientes</span>
+        <div class="reseña-header">
+            <span class="tit-reseñas">Opiniones de clientes</span>
+            <span class="media">{{ media_valoraciones }}/5</span>
+        </div>
+        <hr class="hr-libros">
+        <div class="reseña-sub">
+            <span>-</span>
+            <figcaption class="text-right-custom">{{ cantidad_valoraciones }} {% trans "comentarios de usuarios" %}</figcaption>
+        </div>
         <hr>
         {% for reseña in libro.reseñas.all %}
         <div class="reseña">
-            <h4>{{ reseña.usuario }}</h4>
-            <p>{{ reseña.texto }}</p>
-            <p><strong>Puntuación:</strong> {{ reseña.puntuacion }} / 5</p>
-            <hr>
+            <div class="one">
+                <h4>{{ reseña.usuario }}</h4>
+                <p>{{ reseña.fecha|date:"d/m/Y" }}</p>
+            </div>
+            <div class="two">
+                <div class="puntuacion-estrellas">
+                    {% if reseña.valoracion == 5 %}
+                        <img src="{% static 'img/estrellas/5-estrellas.png' %}" alt="5 estrellas" class="estrella">
+                    {% elif reseña.valoracion == 4 %}
+                        <img src="{% static 'img/estrellas/4-estrellas.png' %}" alt="4 estrellas" class="estrella">
+                    {% elif reseña.valoracion == 3 %}
+                        <img src="{% static 'img/estrellas/3-estrellas.png' %}" alt="3 estrellas" class="estrella">
+                    {% elif reseña.valoracion == 2 %}
+                        <img src="{% static 'img/estrellas/2-estrellas.png' %}" alt="2 estrellas" class="estrella">
+                    {% elif reseña.valoracion == 1 %}
+                        <img src="{% static 'img/estrellas/1-estrellas.png' %}" alt="1 estrella" class="estrella">
+                    {% endif %}
+                </div>
+                <p>{{ reseña.comentario }}</p>
+            </div>
         </div>
+        <hr>
         {% empty %}
         <p>No hay reseñas para este libro aún.</p>
         {% endfor %}
+
+        {% if libro.reseñas.count == 3 %}
+            <div class="ver-reseñas">
+                <a href="{% url 'ver_reseñas' libro.id %}" class="btn-ver-reseñas">Ver todas las reseñas</a>
+            </div>
+        {% endif %}
+
     </div>
-
-
-     
 {% endblock %}

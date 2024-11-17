@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="payment-container">
+    <h2>Editar tarjeta</h2>
+    <form method="post" class="form-tarjeta">
+        {% csrf_token %}
+
+        <!-- Número de la tarjeta -->
+        <div class="form-group">
+            <label for="numero">Numeración de la tarjeta*</label>
+            {{ form.numero }}
+            {% if form.numero.errors %}
+                <div class="error">
+                    {% for error in form.numero.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Titular de la tarjeta -->
+        <div class="form-group">
+            <label for="titular">Titular de la tarjeta*</label>
+            {{ form.titular }}
+            {% if form.titular.errors %}
+                <div class="error">
+                    {% for error in form.titular.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Tipo de tarjeta -->
+        <div class="form-group">
+            <label for="tipo">Tipo de tarjeta*</label>
+            {{ form.tipo }}
+            {% if form.tipo.errors %}
+                <div class="error">
+                    {% for error in form.tipo.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Saldo inicial de la tarjeta -->
+        <div class="form-group">
+            <label for="saldo">Saldo*</label>
+            {{ form.saldo }}
+            {% if form.saldo.errors %}
+                <div class="error">
+                    {% for error in form.saldo.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Mes y Año de Caducidad -->
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="mes_caducidad">Mes de Caducidad*</label>
+                {{ form.mes_caducidad }}
+                {% if form.mes_caducidad.errors %}
+                    <div class="error">
+                        {% for error in form.mes_caducidad.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="año_caducidad">Año de Caducidad*</label>
+                {{ form.año_caducidad }}
+                {% if form.año_caducidad.errors %}
+                    <div class="error">
+                        {% for error in form.año_caducidad.errors %}
+                            <p class="text-danger">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-success">Guardar cambios</button>
+            <a href="{% url 'ver_tarjetas' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
