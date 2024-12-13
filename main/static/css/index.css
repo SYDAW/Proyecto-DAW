@@ -261,6 +261,7 @@ footer {
 .category-item {
     text-align: center;
     margin: 5%;
+    text-decoration: none;
 }
 
 .category-img {
@@ -584,14 +585,12 @@ h2 {
 
 /*Autor, Genero y Libro*/
 .main-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 50px auto;
+    width: 90%;
+    margin: 20px auto;
     padding: 30px;
     background-color: #fff;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
 }
 
 h1 {
@@ -720,10 +719,8 @@ h1 {
     padding: 20px;
     max-width: calc(100% - 180px); 
     box-sizing: border-box;
+    min-height: 600px;
 }
-
-
-
 
 /* Detalles libro*/
 .libro-container {
@@ -951,7 +948,7 @@ h1 {
     margin-bottom: 5px;
 }
 
-.container-reseñas hr-libros {
+.hr-editado {
     margin-top: 1%;
     border: 2px solid #034D28;
     color: #034D28;
@@ -1304,4 +1301,130 @@ h1 {
     font-size: 16px;
     font-weight: bold;
     margin-top: 2%;
+}
+
+/*Novedades*/
+.carousel-sections {
+    margin: 0;
+    padding: 0;
+}
+
+.carousel-inner {
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 0px; 
+    padding: 0; 
+    margin: 0;
+    max-width: 90%;
+    justify-content: center;
+}
+
+.d-inline-block {
+    margin: 0; 
+    padding: 0;
+}
+
+.libros-carousel {
+    width: 250px;
+    min-height: 452px;
+    background: rgba(255, 255, 255, 1);
+    opacity: 1;
+    position: relative;
+    border: 1px solid rgba(3, 77, 40, 1);
+    overflow: hidden;
+    display: inline-block; 
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.hr-libros-carousel {
+    width: 90%;
+    border: none; 
+    border-top: 2px solid #034D28;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.d-inline-block {
+    margin: none;
+}
+
+.card-img-top-carousel {
+    width: 188px;
+    height: 285px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    opacity: 1;
+    position: relative;
+    margin: 20px auto; 
+    display: block; 
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.controls {
+    margin-top: 20px; /* Espaciado entre el carrusel y las flechas */
+    display: flex;
+    justify-content: center; /* Centra las flechas */
+    gap: 15px; /* Espaciado entre las flechas */
+}
+
+.btn.icon {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.btn.icon:hover {
+    background-color: rgba(3, 77, 40, 0.1); /* Efecto hover */
+    border-radius: 50%; /* Redondeo del botón */
+}
+
+.c-icon {
+    fill: rgba(0, 0, 0, 0.7); /* Color de las flechas */
+    transition: fill 0.3s ease;
+}
+
+.btn.icon:hover .c-icon {
+    fill: rgba(3, 77, 40, 1); /* Cambio de color al pasar el mouse */
+}
+
+.btn.icon:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.dots-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-container {
+    margin-top: 10px; /* Espacio entre contenido y botón */
+}
+
+.btn-reserva {
+    width: 112px;
+    position: absolute;
+    margin-top: 6%;
+    top: 380px;
+    left: 21px;
+    opacity: 1;
+    text-align: center;
+    border-radius: 15px;
+    background-color: #034D28;
+    color: white;
+    border: none;
+    padding: 5px;
+}
+
+.btn-reserva:hover {
+    background-color: #026c42;
 }

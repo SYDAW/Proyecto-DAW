@@ -1,46 +1,84 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <div class="container-admin">
     <div class="content">
         <nav class="sidebar_nav">
             <div class="menu-section">
                 <p class="menu-title">Mi cuenta</p>
-                <a href="{% url 'perfil' %}" >Mis datos</a>
+                <a href="{% url 'perfil' %}">Mis datos</a>
                 <a href="{% url 'ver_tarjetas' %}">Mis formas de pago</a>
                 <a href="{% url 'ver_direcciones' %}">Mis direcciones</a>
             </div>
             <div class="menu-section">
                 <p class="menu-title">Mis actividades</p>
-                <a href="">Mis reseñas</a>
-                <a href="">Mis reservas</a>
-                <a href="{% url 'compras_realizadas' %}">Mis compras</a>            
+                <a href="{% url 'mis_reseñas' %}">Mis reseñas</a>
+                <a href="{% url 'mis_reservas' %}">Mis reservas</a>
+                <a href="{% url 'compras_realizadas' %}">Mis compras</a>
+                <a href="{% url 'mis_libros_epub' %}">Mis eBooks</a>            
+
             </div>
         </nav>
     </div>
 </div>
 <div class="container-cosas">
     <div class="profile-container">
-        <h2>Mis Compras</h2>
-        <table class="pedido-tabla">
-           <tbody>
-            {% for detalle in detalles %}
-            <tr>
-                <td>
-                    <img src="{{ detalle.producto.imagen.url }}" alt="{{ detalle.producto.titulo }}" class="imagen-checkout">
-                </td>
-                <td>{{ detalle.producto.titulo }}</td>
-                <td>{{ detalle.compra.fecha }}</td>
-                <td>
-                    <a href="{% url 'detalle_compra' detalle.compra.pk %}" class="btn btn-success">Ver Detalles</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4">No has realizado ninguna compra.</td>
-            </tr>
-            {% endfor %}
-        </tbody> 
-        </table>
+        <h1>Mis compras</h1>
+        {% for compra in compras %}
+        <div class="compra-card">
+            <div class="compra-header">
+                <div class="compra-info">
+                    <p>Pedido realizado</p>
+                    <p>{{ compra.fecha|date:"d/m/Y" }}</p>
+                </div>
+                <div class="compra-total">
+                    <p>Total</p>
+                    <p>{{ compra.total_compra }}€</p>
+                </div>
+                <div class="compra-envio">
+                    <p>Enviar a</p>
+                    <div class="dropdown">
+                        <button data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ compra.usuario.first_name }}
+                            <img src="{% static 'img/flecha-abajo.png' %}" alt="img">
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item">
+                                    {{compra.direccion_envio.calle}}, {{compra.direccion_envio.ciudad}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="compra-id">
+                    <p>Pedido Nº {{ compra.id }}</p>
+                    <a class="detalles-pedido-link" href="{% url 'detalle_pedido' compra.id %}">
+                        Ver los detalles del pedido
+                    </a>
+                </div>
+            </div>
+            <hr>
+            <div class="compra-content">
+                {% for detalle in compra.detalles.all %}
+                <div class="detalle-producto">
+                    <div class="imagen-detalle">
+                        <img src="{{ detalle.producto.imagen.url }}" alt="{{ detalle.producto.titulo }}">
+                    </div>
+                    <div class="info-detalle">
+                        <p class="reseña-ti">{{ detalle.producto.titulo }}</p>
+                        <p>{{ detalle.producto.autor }}</p>
+                    </div>
+                    <a href="{% url 'crear_editar_reseña' pk=detalle.producto.pk %}?compra_id={{ compra.pk }}" class="btn btn-success">
+                        Crear/Editar Reseña
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% empty %}
+        <p>No tienes compras realizadas.</p>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

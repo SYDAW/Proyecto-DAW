@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="container-admin">
+    <div class="content">
+        <nav class="sidebar_nav">
+            <a href="{% url 'listar_autores' %}">{% trans "Autores" %}</a>
+            <a href="{% url 'listar_libros' %}">{% trans "Libros" %}</a>
+            <a href="{% url 'listar_generos' %}">{% trans "Géneros" %}</a>
+            <a href="{% url 'listar_reservas' %}">{% trans "Reservas" %}</a>
+            <a href="{% url 'listar_compras' %}">{% trans "Compras" %}</a>
+            <a href="{% url 'listar_libros_reseñas' %}">{% trans "Reseñas"%}</a>
+        </nav>
+    </div>
+</div>
+<div class="container-cosas">
+    <h1>{% trans "Historial de Compras" %}</h1>
+
+    <!-- Formulario de búsqueda -->
+    <form method="get" action="{% url 'listar_compras' %}" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="{% trans 'Buscar compra por producto, fecha de compra (YYYY-MM-DD), numero de pedido o nombre cliente' %}" value="{{ request.GET.q }}">
+            <button type="submit" class="btn btn-outline-personal">{% trans 'Buscar' %}</button>
+        </div>
+    </form>
+
+    <div class="compras-list">
+        {% for compra in compras %}
+        <div class="compra-card">
+            <div class="compra-header">
+                <div class="compra-info">
+                    <p>{% trans "Pedido realizado" %}</p>
+                    <p>{{ compra.fecha|date:"d/m/Y" }}</p>
+                </div>
+                <div class="compra-total">
+                    <p>{% trans "Total" %}</p>
+                    <p>{{ compra.total_compra }} €</p>
+                </div>
+                <div class="compra-envio">
+                    <p>{% trans "Pedido por" %}</p>
+                    <p>{{ compra.usuario.get_full_name }}</p>
+                </div>
+                <div class="compra-id">
+                    <p>{% trans "Pedido Nº" %} {{ compra.id }}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="compra-content">
+                {% for detalle in compra.detalles.all %}
+                <div class="detalle-producto">
+                    <div class="imagen-detalle">
+                        <img src="{{ detalle.producto.imagen.url }}" alt="{{ detalle.producto.titulo }}">
+                    </div>
+                    <div class="info-detalle">
+                        <p class="reseña-ti">{{ detalle.producto.titulo }}</p>
+                        <p>{{ detalle.producto.autor }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% empty %}
+        <p>{% trans "No hay compras realizadas." %}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+    

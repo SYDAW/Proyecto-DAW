@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<script>
+    function selectFormato(formato, cardId) {
+        document.getElementById('formato-seleccionado').value = formato;
+
+        document.querySelectorAll('.clickable-card').forEach(card => {
+            card.classList.remove('selected-card');
+        });
+
+        const selectedCard = document.getElementById(cardId);
+        if (selectedCard) {
+            selectedCard.classList.add('selected-card');
+        }
+
+        const tarjetaContainer = document.getElementById('tarjeta-container');
+        if (formato === 'Físico') {
+            tarjetaContainer.style.display = 'block';
+        } else {
+            tarjetaContainer.style.display = 'none';
+        }
+    }
+</script>
+
+
+{% if form.errors %}
+    <div class="alert alert-danger alert-container" role="alert">
+        {% for error in form.non_field_errors %}
+            {{ error }}
+        {% endfor %}
+        <img src="{% static 'img/x.png' %}" alt="Cerrar" 
+        style="width: 15px; height: 15px; cursor: pointer; float: right; margin-top: -5px;"
+            class="btn-close-img" onclick="this.parentElement.style.display='none';">
+    </div>
+{% endif %}
+
+<div class="main-container">
+    <h2 class="text-center">Seleccionar Formato de Reserva</h2>
+    <div class="card-body">
+        
+        <!-- Información del libro -->
+        <div class="detalle-producto mb-4 d-flex align-items-center">
+            <div class="imagen-detalle me-3">
+                <img src="{{ libro.imagen.url }}" alt="{{ libro.titulo }}" class="img-fluid shadow">
+            </div>
+            <div class="info-detalle">
+                <p class="reseña-ti">{{ libro.titulo }}</p>
+                <p><strong>Autor:</strong> {{ libro.autor.nombre }}</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Formulario principal -->
+        <form method="post" id="form-reserva">
+            {% csrf_token %}
+
+            <!-- Campo oculto para el formato seleccionado -->
+            <input type="hidden" name="formato" id="formato-seleccionado" value="">
+
+            <div class="row">
+                <!-- Card para libro físico -->
+                {% if libro_fisico %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card formato shadow-sm h-100 hover-card clickable-card" id="card-fisico" onclick="selectFormato('Físico', 'card-fisico')">
+                            <div class="card-body">
+                                <h3 class="card-title text-center">Libro Físico</h3>
+                                <hr>
+                                <p class="card-text">Fianza requerida: {{ libro_fisico.precio|add:5 }}€</p>
+                                <p class="card-text">
+                                    Tiene 30 días para devolver el libro. Si está en perfectas condiciones al devolverlo,
+                                    se le devolverá la fianza en su totalidad.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Card para libro digital -->
+                {% if libro_digital %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card shadow-sm h-100 hover-card clickable-card" id="card-digital" onclick="selectFormato('Digital', 'card-digital')">
+                            <div class="card-body">
+                                <h3 class="card-title text-center">Libro Digital</h3>
+                                <hr>
+                                <p class="card-text">No requiere fianza.</p>
+                                <p class="card-text">Acceso válido por 25 días desde la fecha de reserva.</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Selección de tarjeta (solo visible si se elige formato físico) -->
+            <div id="tarjeta-container" style="display: none; margin-top: 20px;">
+                <label for="tarjeta">Selecciona una tarjeta para realizar el pago</label>
+                <select name="tarjeta" id="tarjeta" class="form-select">
+                    <option value="">-- Seleccionar --</option>
+                    {% for id, texto in form.fields.tarjeta.choices %}
+                        <option value="{{ id }}">{{ texto }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <hr>
+
+            <!-- Botón para enviar el formulario -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg">Reservar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

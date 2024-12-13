@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="main-container">
+    <h2>Escribir una opinión</h2>
+    <div class="detalle-producto">
+        <div class="imagen-detalle">
+            <img src="{{ libro.imagen.url }}" alt="{{ libro.titulo }}">
+        </div>
+        <div class="info-detalle">
+            <p class="reseña-ti">{{ libro.titulo }}</p>
+            <p>{{ libro.autor }}</p>
+        </div>
+    </div>
+    <hr>
+    <form method="post" class="formulario-reseña">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="valoracion">Valoración</label>
+            {{ form.valoracion }}
+        </div>
+        <hr>
+        <div class="form-group">
+            <label for="comentario">Añadir un comentario</label>
+            {{ form.comentario }}
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{{ request.META.HTTP_REFERER|default:'#' }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="container-admin">
+    <div class="content">
+        <nav class="sidebar_nav">
+            <a href="{% url 'listar_autores' %}">{% trans "Autores" %}</a>
+            <a href="{% url 'listar_libros' %}">{% trans "Libros" %}</a>
+            <a href="{% url 'listar_generos' %}">{% trans "Géneros" %}</a>
+            <a href="{% url 'listar_reservas' %}">{% trans "Reservas" %}</a>
+            <a href="{% url 'listar_compras' %}">{% trans "Compras" %}</a>
+            <a href="{% url 'listar_libros_reseñas' %}">{% trans "Reseñas"%}</a>
+        </nav>
+    </div>
+</div>
+<div class="container-cosas">
+    <h1>{% trans "Libros para Reseña" %}</h1>
+
+    <!-- Formulario de búsqueda -->
+    <form method="get" action="" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="{% trans 'Buscar libro por título o autor' %}" value="{{ request.GET.q }}">
+            <button type="submit" class="btn btn-outline-personal">{% trans "Buscar" %}</button>
+        </div>
+    </form>
+
+    <div class="list-group">
+        {% for libro in libros %}
+        <a href="{% url 'ver_reseñas' libro.pk %}" class="list-group-item list-group-item-action">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="imagen-detalle me-3 my-3">
+                        <img src="{{ libro.imagen.url }}" alt="{{ libro.titulo }}" class="img-fluid shadow" style="max-height: 100px;">
+                    </div>
+                    <div class="info-detalle">
+                        <p class="reseña-ti">{{ libro.titulo }}</p>
+                        <p><strong>{% trans "Autor:" %}</strong> {{ libro.autor.nombre }}</p>
+                    </div>
+                </div>
+                <span class="badge bg-primary">{% trans "Ver Reseñas" %}</span>
+            </div>
+        </a>
+        {% empty %}
+        <p>{% trans "No hay libros disponibles." %}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

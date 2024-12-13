@@ -2,70 +2,89 @@
 {% load i18n %}
 {% load static %}
 {% block content %}
-    <script>
-        function selectFormato(button) {
+<script>
+     function selectFormato(button) {
             // Cambiar el formato seleccionado
             const formatoSeleccionado = button.value;
             document.getElementById('formato-seleccionado').value = formatoSeleccionado;
 
             // Cambiar la clase activa en los botones
             document.querySelectorAll('.btn-formato').forEach(btn => {
-                btn.classList.remove('active'); // Eliminar clase activa de todos
+                btn.classList.remove('active'); 
             });
-            button.classList.add('active'); // Añadir clase activa al botón clicado
+            button.classList.add('active'); 
 
             // Cambiar el precio mostrado
             const precioElement = document.getElementById('precio');
-            const precio = button.getAttribute('data-precio'); // Obtener el precio del atributo data
-            precioElement.textContent = precio + "€"; // Actualizar el texto del precio
-        }
-    </script>
-
-    <div class="libro-container">
-        <div class="row">
-            <div class="col">
-                <img src="{{ libro.imagen.url }}" alt="{{ libro.titulo }}" class="img-fluid" style="max-width: 100%;">
+            const precio = button.getAttribute('data-precio'); 
+            precioElement.textContent = precio + "€"; 
+    }
+</script>
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">
+                {{ message }}
             </div>
+        {% endfor %}
+    </div>
+{% endif %}
+<div class="libro-container">
+    <div class="row">
+        <div class="col">
+            <img src="{{ libro.imagen.url }}" alt="{{ libro.titulo }}" class="img-fluid" style="max-width: 100%;">
+        </div>
 
-            <div class="col-6">
-                <span class="tit-Li">{{ libro.titulo }}</span><br>
-                <span class="tit-Au">{{ libro.autor.nombre }}</span>
-                <br><br>
-                <span class="sinopsis">Sinopsis</span>
-                <p class="descripcion">{{ libro.descripcion }}</p>
-            </div>
+        <div class="col-6">
+            <span class="tit-Li">{{ libro.titulo }}</span><br>
+            <span class="tit-Au">{{ libro.autor.nombre }}</span>
+            <br><br>
+            <span class="sinopsis">Sinopsis</span>
+            <p class="descripcion">{{ libro.descripcion }}</p>
+        </div>
 
-            <div class="col">
-                <!-- Precio dinámico basado en el formato seleccionado -->
-                <span id="precio" class="precio">{{ precio }}€</span>
+        <div class="col">
+            <!-- Precio dinámico basado en el formato seleccionado -->
+            <span id="precio" class="precio">{{ precio }}€</span>
 
-                <form action="{% url 'añadir-carrito' libro.id %}" method="post">
-                    {% csrf_token %}
-                
-                    <input type="hidden" name="formato" id="formato-seleccionado" value="Fisico"> <!-- Campo oculto para el formato -->
-                    
-                    <button type="submit" class="btn-personal">Añadir a la cesta</button>
+            <form action="{% url 'añadir-carrito' libro.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="formato" id="formato-seleccionado">
+                <button type="submit" class="btn-personal">Añadir a la cesta</button>
 
-                    <!-- Botones para seleccionar el formato -->
-                    <div class="btn-group-container">
-                        <div class="btn-group">
-                            <button type="button" name="formato" value="Fisico" 
-                                class="btn-formato {% if formato_seleccionado == 'Fisico' %}active{% endif %}" 
-                                data-precio="{{ libro.fisico.precio }}" 
-                                onclick="selectFormato(this)">Físico<br>{{ libro.fisico.precio }} €</button>
+                <!-- Botones para seleccionar el formato -->
+                <div class="btn-group-container">
+                    <div class="btn-group">
+                        <button type="button" name="formato" value="Fisico" 
+                            class="btn-formato {% if formato_seleccionado == 'Fisico' %}active{% endif %}" 
+                            data-precio="{{ libro.fisico.precio }}" 
+                            onclick="selectFormato(this)">Físico<br>{{ libro.fisico.precio }} €</button>
                         
                             <button type="button" name="formato" value="Digital" 
-                                    class="btn-formato {% if formato_seleccionado == 'Digital' %}active{% endif %}" 
-                                    data-precio="{{ libro.digital.precio }}" 
-                                    onclick="selectFormato(this)">Digital<br>{{ libro.digital.precio }} €</button>
-                        </div>
+                                class="btn-formato {% if formato_seleccionado == 'Digital' %}active{% endif %}" 
+                                data-precio="{{ libro.digital.precio }}" 
+                                onclick="selectFormato(this)" 
+                                {% if usuario_compro_digital %}disabled{% endif %}>
+                                {% if usuario_compro_digital %}
+                                    Ya comprado
+                                {% else %}
+                                    Digital<br>{{ libro.digital.precio }} €
+                                {% endif %}
+                            </button>
                     </div>
+                </div>
+            </form>
+            
+            <!-- Formulario para pedir préstamo -->
+            {% if libro.disponibilidad %}
+                <form method="get" action="{% url 'elegir_formato' libro.id %}">
+                    <input type="hidden" name="formato" id="formato-seleccionado">
+                    <button type="submit" class="btn-personal">Pedir préstamo</button>
                 </form>
-                
-                <button class="btn-personal">Pedir prestamo</button>
-            </div>
+            {% endif %}
         </div>
     </div>
+</div>
 
     <div class="container-autor">
         <span class="tit-2">Escrito por...</span>
@@ -75,8 +94,7 @@
             </div>
             <div class="texto col-md-9">
                 <h3>{{ libro.autor.nombre }}</h3>
-                <p>{{ libro.autor.biografia|truncatewords:50 }}</p>
-                <a href="#" class="link">Ver más</a>
+                <p>{{ libro.autor.biografia}}</p>
             </div>
         </div>
     </div>
@@ -86,7 +104,7 @@
             <span class="tit-reseñas">Opiniones de clientes</span>
             <span class="media">{{ media_valoraciones }}/5</span>
         </div>
-        <hr class="hr-libros">
+        <hr class="hr-editado">
         <div class="reseña-sub">
             <span>-</span>
             <figcaption class="text-right-custom">{{ cantidad_valoraciones }} {% trans "comentarios de usuarios" %}</figcaption>

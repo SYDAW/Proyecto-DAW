@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="container-admin">
+    <div class="content">
+        <nav class="sidebar_nav">
+            <a href="{% url 'listar_autores' %}">{% trans "Autores" %}</a>
+            <a href="{% url 'listar_libros' %}">{% trans "Libros" %}</a>
+            <a href="{% url 'listar_generos' %}">{% trans "Géneros" %}</a>
+            <a href="{% url 'listar_reservas' %}">{% trans "Reservas" %}</a>
+            <a href="{% url 'listar_compras' %}">{% trans "Compras" %}</a>
+            <a href="{% url 'listar_libros_reseñas' %}">{% trans "Reseñas"%}</a>
+        </nav>
+    </div>
+</div>
+<div class="container-cosas">
+    <h1>{% trans "Reservas" %}</h1>
+
+    <!-- Formulario de búsqueda -->
+    <form method="get" action="{% url 'listar_reservas' %}" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="{% trans 'Buscar reserva por libro o estado' %}" value="{{ request.GET.q }}">
+            <button type="submit" class="btn btn-outline-personal">{% trans 'Buscar' %}</button>
+        </div>
+    </form>
+
+    <h3 class="mt-4">{% trans "Reservas de Libros Físicos" %}</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">{% trans "Usuario" %}</th>
+                    <th scope="col">{% trans "Libro" %}</th>
+                    <th scope="col">{% trans "Fecha de Reserva" %}</th>
+                    <th scope="col">{% trans "Fecha de Devolución" %}</th>
+                    <th scope="col">{% trans "Fianza" %}</th>
+                    <th scope="col">{% trans "Estado" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas.reservas_fisicas %}
+                <tr>
+                    <td>{{ reserva.usuario.get_full_name }}</td>
+                    <td>{{ reserva.libro.libro.titulo }}</td>
+                    <td>{{ reserva.fecha_reserva }}</td>
+                    <td>{{ reserva.fecha_devolucion|default:"Pendiente" }}</td>
+                    <td>{{ reserva.fianza }}</td>
+                    <td>{{ reserva.estado_reserva }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h3 class="mt-4">{% trans "Reservas de Libros Digitales" %}</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">{% trans "Usuario" %}</th>
+                    <th scope="col">{% trans "Libro" %}</th>
+                    <th scope="col">{% trans "Fecha de Reserva" %}</th>
+                    <th scope="col">{% trans "Fecha de Expiración" %}</th>
+                    <th scope="col">{% trans "Estado" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas.reservas_digitales %}
+                <tr>
+                    <td>{{ reserva.usuario.get_full_name }}</td>
+                    <td>{{ reserva.libro.libro.titulo }}</td>
+                    <td>{{ reserva.fecha_reserva }}</td>
+                    <td>{{ reserva.fecha_expiracion }}</td>
+                    <td>{{ reserva.estado_reserva }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -3,6 +3,11 @@
 {% load i18n %}
 
 {% block content %}
+{% if error_message %}
+    <div class="alert alert-danger" role="alert">
+        {{ error_message.0 }} 
+    </div>
+{% endif %}
 <div class="checkout-container">
     <h2>Proceso de Pago</h2>
 

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="main-container">
+    <h1>Detalles del pedido</h1>
+    <div class="compra-card">
+        <div class="detalle-pedido-header">
+            <p>Comprado el {{ compra.fecha|date:"d/m/Y" }}</p>
+            <p>Pedido Nº {{ compra.id }}</p>
+        </div>
+        <div class="detalle-pedido-info">
+            <div>
+                <h3>Dirección de envío</h3>
+                <p>{{ compra.usuario.first_name }} {{ compra.usuario.last_name }}</p>
+                <p>{{ compra.direccion_envio.calle }}</p>
+                <p>{{ compra.direccion_envio.ciudad }}, {{ compra.direccion_envio.codigo_postal }}</p>
+                <p>{{ compra.direccion_envio.pais }}</p>
+            </div>
+            <div>
+                <h3>Medios de pago</h3>
+                <p>{{ compra.tarjeta_compra.tipo }}</p>
+                <p>**** {{ compra.tarjeta_compra.numero|slice:"-4:" }}</p>
+            </div>
+            <div>
+                <h3>Resumen del pedido</h3>
+                <table class="table table-striped">
+                    <tbody>
+                        {% for detalle in compra.detalles.all %}
+                        <tr>
+                            <td>{{ detalle.precio_unitario }}€</td>
+                        </tr>  
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <p>Total del Pedido: <strong>{{ compra.total_compra }}€</strong></p>            
+            </div>
+        </div>
+    </div>
+    <div class="compra-card">
+        <h3>Productos del pedido</h3>
+        {% for detalle in compra.detalles.all %}
+        <div class="detalle-producto">
+            <div class="imagen-detalle">
+                <img src="{{ detalle.producto.imagen.url }}" alt="{{ detalle.producto.titulo }}">
+            </div>
+            <div class="info-detalle">
+                <p class="reseña-ti">{{ detalle.producto.titulo }}</p>
+                <p>{{ detalle.producto.autor }}</p>
+            </div>
+            <a href="{% url 'crear_editar_reseña' pk=detalle.producto.pk %}?compra_id={{ compra.pk }}" class="btn btn-success">
+                Crear/Editar Reseña
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

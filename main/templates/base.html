@@ -13,6 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Scope+One&display=swap" rel="stylesheet">
         <link type="text/css" href='{% static "css/index.css" %}' rel="stylesheet"/>
         <link type="text/css" href='{% static "css/perfil.css" %}' rel="stylesheet"/>
+        <link type="text/css" href='{% static "css/libro.css" %}' rel="stylesheet"/>
         
     </head>
     <body>
@@ -49,9 +50,11 @@
                     <a href="{% url 'login' %}" class="login-button">Login</a>
                     <a href="{% url 'signin' %}" class="register-button">Register</a>
                 {% endif %}
+                {% if not request.user.is_staff %}
                 <a class="cart-button" href="{% url 'carrito' %}">
                     <img src="{% static 'img/cesta.png' %}" alt="Cesta">
                 </a>
+                {% endif %}
                 <button class="language-button">
                     <img src="{% static 'img/tierra.png' %}" alt="Tierra">
                 </button>

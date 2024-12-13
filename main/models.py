@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
+from datetime import date, timedelta
 
 # Modelo Usuario
 class Usuario(models.Model):
@@ -97,22 +98,6 @@ class Direccion(models.Model):
     class Meta:
         verbose_name_plural = "Direcciones"
 
-
-# Modelo Reserva
-class Reserva(models.Model):
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reservas')
-    libro = models.ForeignKey(LibroFisico, on_delete=models.CASCADE, related_name='reservas')
-    fecha_reserva = models.DateField(auto_now_add=True)
-    fecha_devolucion = models.DateField()
-    estado_reserva = models.CharField(max_length=20, choices=[('Activa', 'Activa'), ('Completada', 'Completada'), ('Sancionada', 'Sancionada')])
-
-    def __str__(self):
-        return f'{self.usuario.username} - {self.libro.libro.titulo}'
-
-    class Meta:
-        verbose_name_plural = "Reservas"
-
-
 # Modelo Tarjeta
 class Tarjeta(models.Model):
     TIPO_CHOICES = [
@@ -129,6 +114,80 @@ class Tarjeta(models.Model):
 
     def __str__(self):
         return f'{self.numero} - {self.usuario.username}'
+
+
+
+# Modelo Reserva Libro Físico
+class ReservaLibroFisico(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reservas_fisicas')
+    libro = models.ForeignKey(LibroFisico, on_delete=models.CASCADE, related_name='reservas')
+    tarjeta_reserva = models.ForeignKey(Tarjeta, on_delete=models.PROTECT, null=True, blank=True, related_name='reservas')
+    fecha_reserva = models.DateField(auto_now_add=True)
+    fecha_devolucion = models.DateField(null=True, blank=True)
+    fianza = models.DecimalField(max_digits=10, decimal_places=2) 
+    fianza_devuelta = models.BooleanField(default=False) 
+    estado_reserva = models.CharField(
+        max_length=20,
+        choices=[
+            ('Activa', 'Activa'),
+            ('Completada', 'Completada'),
+            ('Sancionada', 'Sancionada'),
+        ],
+    )
+
+    def devolver_libro(self, en_buenas_condiciones):
+        """
+        Maneja la devolución del libro.
+        """
+        if en_buenas_condiciones:
+            self.fianza_devuelta = True  
+        else:
+            self.fianza_devuelta = False  
+        self.estado_reserva = 'Completada'
+        self.save()
+
+    def verificar_vencimiento(self):
+        """
+        Verifica si han pasado 30 días sin devolución.
+        """
+        if not self.fecha_devolucion and (self.fecha_reserva + timedelta(days=30)) < date.today():
+            self.estado_reserva = 'Sancionada'
+            self.fianza_devuelta = False
+            self.save()
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.libro.libro.titulo} (Físico)"
+
+    class Meta:
+        verbose_name_plural = "Reservas libros fisicos"
+
+# Reserva Libro Digital
+class ReservaLibroDigital(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reservas_digitales')
+    libro = models.ForeignKey(LibroDigital, on_delete=models.CASCADE, related_name='reservas')
+    fecha_reserva = models.DateField(auto_now_add=True)
+    fecha_expiracion = models.DateField()
+    estado_reserva = models.CharField(
+        max_length=20,
+        choices=[
+            ('Activa', 'Activa'),
+            ('Expirada', 'Expirada'),
+        ],
+    )
+
+    def verificar_acceso(self):
+        """
+        Verifica si la reserva ha expirado.
+        """
+        if self.fecha_expiracion < date.today():
+            self.estado_reserva = 'Expirada'
+            self.save()
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.libro.libro.titulo} (Digital)"
+
+    class Meta:
+        verbose_name_plural = "Reservas libros digitales"
 
 
 # Modelo Compra
@@ -201,4 +260,7 @@ class Reseña(models.Model):
         return f'{self.usuario.username} - {self.libro.titulo}'
 
     class Meta:
+        unique_together = ('usuario', 'libro')
         verbose_name_plural = "Reseñas"
+
+

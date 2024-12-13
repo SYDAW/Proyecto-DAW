@@ -241,24 +241,29 @@ h1 {
 /*Alert*/
 .alert-container {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
     z-index: 1050;
+    width: auto;
+    max-width: 400px;
 }
 
 .alert {
     display: flex;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #d4edda; /* Verde claro, ajusta según sea necesario */
+    justify-content: center;
+    padding: 15px 25px;
+    background-color: #d4edda; 
     color: #155724;
     border: 1px solid #c3e6cb;
     border-radius: 5px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 300px;
-    margin-bottom: 10px;
-    font-size: 14px;
+    max-width: 400px;
+    text-align: center;
+    font-size: 16px;
 }
+
 
 .btn-close {
     background: transparent;
@@ -274,3 +279,296 @@ h1 {
 }
 
 /*Mis compras*/
+.compra-card {
+    width: 90%;
+    max-width: 1000px; 
+    min-width: 300px;
+    background-color: #fff;
+    border: 1px solid #d1d1d1;
+    margin: 20px auto;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.compra-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    align-items: center; 
+    font-family: Sanchez; 
+}
+
+
+.compra-header div {
+    text-align: center;
+    flex: 1; 
+    padding: 0 10px;
+}
+
+.compra-header p {
+    margin: 0; 
+    color: #515151; 
+}
+
+.compra-header p:nth-child(1) {
+    text-transform: uppercase;
+    color: #034D28;
+}
+
+.compra-header p:nth-child(2) {
+    font-size: 1rem; 
+}
+
+.compra-card hr {
+    margin: 15px 0;
+    background-color: #d1d1d1;
+}
+
+.compra-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; 
+    font-size: 1rem;
+    font-family: Sanchez;
+}
+
+.compra-content p {
+    display: contents;
+}
+
+.compra-content span{
+    margin-left: 40%;
+}
+
+.detalles-pedido-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.detalles-pedido-link:hover {
+    text-decoration: underline;
+}
+
+.compra-content  {
+    text-align: left; 
+}
+
+.dropdown button {
+    background: none;
+    border: none;
+    color: inherit; 
+    padding: 0; 
+    font: inherit; 
+    cursor: pointer;
+}
+
+.dropdown button:hover {
+    text-decoration: underline;
+}
+
+/*Detalle pedido*/
+.detalle-pedido-container {
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #d1d1d1;
+    border-radius: 5px;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.detalle-pedido-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #d1d1d1;
+    padding-bottom: 10px;
+}
+
+.detalle-pedido-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    font-family: Sanchez;
+}
+
+.detalle-pedido-info div {
+    width: 30%;
+}
+
+.producto-detalle {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #d1d1d1;
+    padding: 10px 0;
+}
+
+.producto-detalle img {
+    width: 80px;
+    height: auto;
+    margin-right: 15px;
+}
+
+
+/*Reseña*/
+.detalle-producto {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px; 
+    margin-bottom: 20px;
+}
+
+.imagen-detalle img {
+    width: 80px; 
+    height: auto; 
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.info-detalle p {
+    margin: 0; 
+    font-size: 14px; 
+    text-align: left;
+    font-family: Sedan;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.47999998927116394);
+}
+
+.info-detalle .reseña-ti {
+    color: black;
+}
+
+.opciones-eliminar {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.opciones-eliminar .btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-family: Sanchez;
+    font-size: 1rem;
+}
+
+.opciones-eliminar .btn-danger {
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.opciones-eliminar .btn-danger:hover {
+    background-color: #c9302c;
+}
+
+.opciones-eliminar .btn-secondary {
+    background-color: #868686;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.opciones-eliminar .btn-secondary:hover {
+    background-color: #6c757d;
+}
+
+/*Reserva*/
+.info-detalle {
+    text-align: left;
+}
+
+.formato-detalle {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+/*Mis epubs*/
+.book-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.book-list-item {
+    display: flex;
+    justify-content: center;
+}
+
+.book.card {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.book-illustration {
+    flex: 0 0 120px;
+    max-width: 120px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+}
+
+.book-illustration-content {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.book-presentation {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+.book-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.book-author {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+.book-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.btn-primary {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.book-action-secondary {
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 0.9rem;
+    cursor: pointer;
+}

@@ -3,6 +3,7 @@ from .models import *
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from datetime import date
+from django.core.exceptions import ValidationError
 
 # Formulario de autenticación de usuario
 class LoginForm(AuthenticationForm):
@@ -281,16 +282,13 @@ class CheckoutForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
+        self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
         # Limitar las opciones de dirección y tarjeta al usuario actual
-        if user:
-            direcciones = Direccion.objects.filter(user=user)
-            tarjetas = Tarjeta.objects.filter(usuario=user)
-
-            print("Direcciones:", direcciones)  # Agrega este print
-            print("Tarjetas:", tarjetas)       # Agrega este print
+        if self.user:
+            direcciones = Direccion.objects.filter(user=self.user)
+            tarjetas = Tarjeta.objects.filter(usuario=self.user)
 
             self.fields['direccion'].queryset = direcciones
             self.fields['tarjeta'].queryset = tarjetas
@@ -298,11 +296,13 @@ class CheckoutForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         tarjeta = cleaned_data.get('tarjeta')
+        direccion = cleaned_data.get('direccion')
         total_compra = self.initial.get('total_compra')
 
         # Verificar saldo suficiente en la tarjeta
         if tarjeta and tarjeta.saldo < total_compra:
             raise forms.ValidationError("Saldo insuficiente en la tarjeta seleccionada.")
+        
         return cleaned_data
 
     def realizar_compra(self, user, carrito, total_compra):
@@ -327,6 +327,8 @@ class CheckoutForm(forms.Form):
             tarjeta_compra=tarjeta,
         )
 
+        print(f"Compra creada: {compra}")
+
         # Guardar los detalles de la compra
         for item in carrito.items.all():
             DetalleCompra.objects.create(
@@ -337,7 +339,81 @@ class CheckoutForm(forms.Form):
                 precio_unitario=(item.producto.fisico.precio if item.formato == "Fisico" else item.producto.digital.precio)
             )
 
+        # Verificar si hay libros digitales en el carrito
+        libro_digital = None
+        for item in carrito.items.filter(formato="Digital"):
+            libro_digital = item.producto.digital
+
         # Vaciar el carrito
         carrito.items.all().delete()
 
         return compra
+    
+class ReseñaForm(forms.ModelForm):
+    class Meta:
+        model = Reseña
+        fields = ['valoracion', 'comentario']
+        widgets = {
+            'valoracion': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'min': 1,
+                'max': 5,
+                'placeholder': 'Valoración (1-5)'
+            }),
+            'comentario': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 5,
+                'placeholder': 'Escribe tu reseña aquí...'
+            }),
+        }
+
+
+class ElegirFormatoForm(forms.Form):
+    FORMATO_CHOICES = [
+        ('Físico', 'Físico'),
+        ('Digital', 'Digital'),
+    ]
+    formato = forms.ChoiceField(choices=FORMATO_CHOICES, widget=forms.RadioSelect, label="Formato")
+    tarjeta = forms.ChoiceField(label="", required=False)
+
+
+    def __init__(self, *args, **kwargs):
+        self.usuario = kwargs.pop('usuario', None)
+        self.libro = kwargs.pop('libro', None) 
+        super().__init__(*args, **kwargs)
+
+        # Cargar tarjetas del usuario si está autenticado
+        if self.usuario:
+            tarjetas = Tarjeta.objects.filter(usuario=self.usuario)
+            self.fields['tarjeta'].choices = [(tarjeta.id, f"{tarjeta.titular} - {tarjeta.numero[-4:]}") for tarjeta in tarjetas]
+
+
+    def clean(self):
+        cleaned_data = super().clean()
+        formato = cleaned_data.get('formato')
+        tarjeta_id = cleaned_data.get('tarjeta')
+
+        # Verificar si el usuario ya tiene 6 reservas activas
+        total_reservas = (
+            ReservaLibroFisico.objects.filter(usuario=self.usuario, estado_reserva='Activa').count() +
+            ReservaLibroDigital.objects.filter(usuario=self.usuario, estado_reserva='Activa').count()
+        )
+        if total_reservas >= 6:
+            raise ValidationError("Has alcanzado el límite máximo de 6 reservas activas.")
+
+        # Validar si el libro ya está reservado en cualquier formato
+        libro_fisico = LibroFisico.objects.filter(libro=self.libro).first()
+        libro_digital = LibroDigital.objects.filter(libro=self.libro).first()
+        reserva_existente = (
+            ReservaLibroFisico.objects.filter(usuario=self.usuario, libro=libro_fisico, estado_reserva='Activa').exists() or
+            ReservaLibroDigital.objects.filter(usuario=self.usuario, libro=libro_digital, estado_reserva='Activa').exists()
+        )
+        if reserva_existente:
+            raise ValidationError("Ya tienes este libro reservado en otro formato.")
+
+        # Si el formato es físico, la tarjeta es obligatoria
+        if formato == 'Físico' and not tarjeta_id:
+            raise ValidationError("Debes seleccionar una tarjeta para reservar este formato.")
+
+
+        return cleaned_data

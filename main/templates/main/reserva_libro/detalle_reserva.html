@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="main-container">
+    <h2 class="text-center">Detalles de la Reserva</h2>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <div class="detalle-producto mb-4 d-flex align-items-center">
+                <div class="imagen-detalle me-3">
+                    <img src="{{ reserva.libro.libro.imagen.url }}" alt="{{ reserva.libro.libro.titulo }}" class="img-fluid shadow">
+                </div>
+                <div class="info-detalle">
+                    <p class="reseña-ti">{{ reserva.libro.libro.titulo }}</p>
+                    <p><strong>Autor:</strong> {{ reserva.libro.libro.autor.nombre }}</p>
+                </div>
+            </div>
+            <hr>
+            <p><strong>Formato:</strong> {{ formato }}</p>
+            <p><strong>Estado:</strong> {{ reserva.estado_reserva }}</p>
+    
+            {% if formato == "Físico" %}
+                <p><strong>Fecha de Devolución:</strong> {{ reserva.fecha_devolucion }}</p>
+                <p><strong>Fianza:</strong> {{ reserva.fianza }} €</p>
+                {% if reserva.tarjeta_reserva %}
+                    <p><strong>Tarjeta Utilizada:</strong> {{ reserva.tarjeta_reserva.titular }} - **** {{ reserva.tarjeta_reserva.numero|slice:-4 }}</p>
+                {% endif %}
+                <p><strong>Fianza Devuelta:</strong>
+                    {% if reserva.fianza_devuelta %}
+                        Sí
+                    {% else %}
+                        No
+                    {% endif %}
+                </p>
+            {% else %}
+                <p><strong>Fecha de Expiración:</strong> {{ reserva.fecha_expiracion }}</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="text-center mt-4">
+        <a href="{% url 'mis_reservas' %}" class="btn btn-secondary">Volver a Mis Reservas</a>
+    </div>
+    
+</div>
+{% endblock %}

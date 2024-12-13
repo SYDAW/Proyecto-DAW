@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="main-container">
+    <h2 class="text-center">Reserva Confirmada</h2>
+    <div class="card mt-4">
+        <div class="card-body">
+            <h3 class="card-title">¡Reserva Exitosa!</h3>
+            <p><strong>Formato:</strong> {{ formato }}</p>
+            <p><strong>Libro:</strong> {{ reserva.libro.libro.titulo }}</p>
+            <p><strong>Fecha de Reserva:</strong> {{ reserva.fecha_reserva }}</p>
+            {% if formato == 'Físico' %}
+                <p><strong>Fecha de Devolución:</strong> {{ reserva.fecha_devolucion }}</p>
+                <p><strong>Fianza:</strong> {{ reserva.fianza }} €</p>
+                {% if reserva.tarjeta_reserva %}
+                    <p><strong>Tarjeta Utilizada:</strong> {{ reserva.tarjeta_reserva.titular }} - **** {{ reserva.tarjeta_reserva.numero|slice:-4 }}</p>
+                {% endif %}
+            {% else %}
+                <p><strong>Fecha de Expiración:</strong> {{ reserva.fecha_expiracion }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="text-center mt-4">
+        <a href="{% url 'perfil' %}" class="btn btn-primary">Ir a Mi Perfil</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container-admin">
+    <div class="content">
+        <nav class="sidebar_nav">
+            <div class="menu-section">
+                <p class="menu-title">Mi cuenta</p>
+                <a href="{% url 'perfil' %}" >Mis datos</a>
+                <a href="{% url 'ver_tarjetas' %}">Mis formas de pago</a>
+                <a href="{% url 'ver_direcciones' %}">Mis direcciones</a>
+            </div>
+            <div class="menu-section">
+                <p class="menu-title">Mis actividades</p>
+                <a href="{% url 'mis_reseñas' %}">Mis reseñas</a>
+                <a href="{% url 'mis_reservas' %}">Mis reservas</a>
+                <a href="{% url 'compras_realizadas' %}">Mis compras</a>            
+                <a href="{% url 'mis_libros_epub' %}">Mis eBooks</a>            
+            </div>
+        </nav>
+    </div>
+</div>
+<div class="container-cosas">
+    <h2 class="text-center mb-4">Mis eBooks</h2>
+
+    <!-- Formulario de búsqueda -->
+    <form method="get" action="" class="mb-4">
+        <div class="input-group">
+            <input
+                type="text"
+                name="q"
+                class="form-control"
+                placeholder="{% trans 'Buscar por título o autor' %}"
+                value="{{ query }}"
+            >
+            <button type="submit" class="btn btn-primary">{% trans 'Buscar' %}</button>
+        </div>
+    </form>
+
+    <!-- Libros Comprados -->
+    <h3 class="mb-3">Comprados</h3>
+    {% if libros_epub %}
+        <ul class="book-list">
+            {% for detalle in libros_epub %}
+                <li class="book-list-item">
+                    <div class="book card">
+                        <div class="book-illustration">
+                            <img class="book-illustration-content book-cover" src="{{ detalle.producto.imagen.url }}" alt="{{ detalle.producto.titulo }}">
+                        </div>
+                        <div class="book-presentation">
+                            <div class="book-details">
+                                <div class="book-infos">
+                                    <p class="book-title">{{ detalle.producto.titulo }}</p>
+                                    <p class="book-author">{{ detalle.producto.autor.nombre }}</p>
+                                </div>
+                            </div>
+                            <div class="book-actions">
+                                <a href="#" class="btn btn-success book-action book-action-primary" 
+                                   style="text-decoration: none;"
+                                   onclick="alert('Esta funcionalidad está en desarrollo. ¡Vuelve pronto!'); return false;">
+                                    Leer
+                                </a>
+                                <a href="{% url 'descargar_libro' detalle.id %}" class="btn btn-warning book-action book-action-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="bi bi-download" viewBox="0 0 16 16">
+                                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+                                    </svg>
+                                </a>                              
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-left">No has comprado libros digitales aún.</p>
+    {% endif %}
+
+    <!-- Libros Reservados Digitalmente -->
+    <h3 class="mt-5 mb-3">Reservados Digitalmente</h3>
+    {% if libros_reservados %}
+        <ul class="book-list">
+            {% for reserva in libros_reservados %}
+                <li class="book-list-item">
+                    <div class="book card">
+                        <div class="book-illustration">
+                            <img class="book-illustration-content book-cover" src="{{ reserva.libro.libro.imagen.url }}" alt="{{ reserva.libro.libro.titulo }}">
+                        </div>
+                        <div class="book-presentation">
+                            <div class="book-details">
+                                <div class="book-infos">
+                                    <p class="book-title">{{ reserva.libro.libro.titulo }}</p>
+                                    <p class="book-author">{{ reserva.libro.libro.autor.nombre }}</p>
+                                </div>
+                            </div>
+                            <div class="book-actions">
+                                <a href="#" class="btn btn-success book-action book-action-primary" 
+                                   style="text-decoration: none;"
+                                   onclick="alert('Esta funcionalidad está en desarrollo. ¡Vuelve pronto!'); return false;">
+                                    Leer
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-left">No tienes libros reservados digitalmente aún.</p>
+    {% endif %}
+</div>
+{% endblock %}

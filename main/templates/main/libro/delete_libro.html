@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="main-container">
+    <h1>{% trans "Eliminar Libro" %}</h1>
+    <p>{% trans "¿Estás seguro de que deseas eliminar el libro" %} "{{ object.titulo }}"? {% trans "Esta acción no se puede deshacer." %}</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-buttons">
+            <button type="submit" class="btn btn-danger">{% trans "Confirmar Eliminación" %}</button>
+            <a href="{% url 'listar_libros' %}" class="btn btn-secondary">{% trans "Cancelar" %}</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

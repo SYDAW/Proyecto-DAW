@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="main-container">
+    <div class="reseña-header">
+        <span class="tit-reseñas">Eliminar Reseña</span>
+    </div>
+    <hr>
+    <div class="confirmacion-eliminar">
+        <p>¿Estás seguro de que deseas eliminar la reseña de <strong>{{ object.libro.titulo }}</strong>?</p>
+        <p>Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="opciones-eliminar">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+        <a href="{% url 'mis_reseñas' %}" class="btn btn-secondary">Cancelar</a>
+    </div>
+</div>
+{% endblock %}
