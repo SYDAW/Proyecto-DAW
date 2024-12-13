@@ -13,8 +13,8 @@ La plataforma permitirá a los usuarios realizar las siguientes acciones:
 - **Consulta y búsqueda de libros**: 
   - Los usuarios podrán explorar el catálogo digital a través de un sistema de búsqueda intuitivo que permitirá filtrar los resultados por título, autor, género, etc.
   
-- **Reserva de libros físicos**: 
-  - Los usuarios podrán reservar libros físicos disponibles en la biblioteca, optimizando el tiempo de visita o solicitar la entrega a domicilio.
+- **Reserva de libros físicos o digitales**: 
+  - A través de la aplicación, los usuarios tendrán la opción de reservar tanto ejemplares físicos disponibles en la biblioteca como libros digitales. Este sistema de reservas asegurará que los usuarios puedan acceder a los libros deseados en un momento posterior, optimizando el tiempo de visita a la biblioteca o facilitando el acceso desde cualquier lugar.
 
 - **Compra de libros digitales o físicos**: 
   - Los usuarios podrán adquirir libros tanto en formato físico como digital.
@@ -31,10 +31,32 @@ La plataforma permitirá a los usuarios realizar las siguientes acciones:
   - Un carrito donde los usuarios podrán agregar o eliminar libros antes de realizar la compra.
 
 - **Sección de libros reservados**: 
-  - Los usuarios podrán ver los libros reservados y sus plazos de devolución. Se podrá reservar un máximo de 4 libros con un plazo de 30 días de devolución.
 
-- **Panel de administración**: 
-  - Área para administradores con herramientas para gestionar el catálogo, reservas, compras, y sanciones.
+  En esta sección, el usuario podrá visualizar todos los libros que tenga reservados, junto con       los   plazos correspondientes. Las condiciones para los libros reservados son las siguientes:
+
+  1. **Libros físicos**:
+      - Los usuarios dispondrán de 30 días para devolver los libros físicos, tras lo cual, si no los devuelven, serán sancionados.
+      - Para reservar libros físicos, se requerirá un depósito como fianza, que será reembolsado tras la devolución en buenas condiciones.
+
+  2. **Libros digitales**:
+      - Los usuarios tendrán acceso a los libros digitales durante un periodo de 25 días. Una vez pasado este plazo, el acceso al libro se deshabilitará automáticamente.
+    
+- **Panel de administración**:
+
+    Área para administradores con herramientas para gestionar el catálogo, reservas, compras, y         sanciones.
+  
+  1. **Gestión del catálogo de libros**:
+      - Posibilidad de añadir, editar o eliminar libros del catálogo digital.
+        
+  2. **Gestión de las reservas de libros de los usuarios**:
+      - Supervisar y administrar las reservas realizadas por los usuarios, tanto de libros físicos como digitales.
+
+  3. **Gestión de reseñas**:
+      - Revisar, moderar y eliminar reseñas realizadas por los usuarios para garantizar contenido adecuado y relevante.
+      
+   4. **Gestión de compras**:
+      - Visualizar y administrar todas las compras realizadas por los usuarios, ya sean de libros físicos o digitales.
+  
 
 - **Sistema de comentarios y valoraciones**: 
   - Los usuarios podrán dejar reseñas y valoraciones de los libros.
@@ -90,13 +112,17 @@ El desarrollo de **BookVerse** utilizará las siguientes tecnologías:
 ### Frontend:
 - **HTML** y **CSS**: Para la creación y diseño de la interfaz de usuario.
 - **JavaScript**: Para añadir interactividad y mejorar la experiencia del usuario.
+- **Boostrap5**: Framework de diseño front-end que facilita la creación de diseños modernos, responsivos y consistentes.
 
 ### Backend:
 - **Django**: Framework de Python que facilitará la estructura sólida y segura de la plataforma.
 - **Python**: Lenguaje de programación para la lógica del backend.
 
 ### Base de Datos:
-- **PostgreSQL**: Sistema de gestión de bases de datos relacional para almacenar y gestionar información de libros, usuarios y transacciones.
+- **SQLite3**: Sistema de gestión de bases de datos ligero que viene ya incluidas en la aplicación. Se utilizará para almacenar y gestionar toda la información de libros, usuarios y transacciones de manera sencilla y eficiente durante el desarrollo inicial del proyecto.
+
+### Despliegue de la aplicación web:
+- **Pythonanywhere**: Sistema de gestión de bases de datos ligero que viene ya incluidas en la aplicación. Se utilizará para almacenar y gestionar toda la información de libros, usuarios y transacciones de manera sencilla y eficiente durante el desarrollo inicial del proyecto.
 
 ## Objetivos del Proyecto
 
@@ -130,9 +156,12 @@ El objetivo principal de **BookVerse** es proporcionar una plataforma digital qu
 2. **Búsqueda y filtrado de libros**:
    - Los usuarios podrán buscar libros por título, autor, género, entre otros filtros disponibles.
 
-3. **Reserva de libros físicos**:
-   - Los usuarios podrán reservar un máximo de 4 libros físicos, con un plazo de devolución de 30 días.
-   - El sistema registrará las reservas y bloqueará los libros no disponibles.
+3. **Reserva de libros físicos y digitales**:
+    - Los usuarios podrán reservar un máximo de 6 libros en total, combinando libros físicos y digitales.
+    - De los libros reservados:
+      - Físicos: Los libros deberán ser devueltos en un plazo de 30 días. Si no se devuelven a tiempo, se aplicará una sanción, ya que previamente se les solicitará una fianza.
+      - Digitales: Los usuarios podrán reservar libros digitales, los cuales estarán disponibles durante un máximo de 25 días. Una vez pasado este plazo, el acceso será revocado automáticamente.
+    - El sistema registrará todas las reservas y bloqueará los libros que no estén disponibles, ya sea en formato físico o digital.
 
 4. **Compra de libros (físicos y digitales)**:
    - Los usuarios podrán añadir libros a una cesta de compra.
@@ -146,8 +175,9 @@ El objetivo principal de **BookVerse** es proporcionar una plataforma digital qu
 
 7. **Gestión de catálogo de libros (para administradores)**:
    - Los administradores podrán añadir, editar y eliminar libros del catálogo.
-   - Se dispondrá de una sección para ver todas las compras realizadas por los usuarios.
-   - El sistema gestionará las reservas y sanciones por retraso en la devolución de libros.
+   - Tendrán una sección donde podrán ver todas las compras que han realizado los usuarios.
+   - El sistema gestionará las reservas y sanciones de los usuarios, asegurando el cumplimiento de las normas de préstamo.
+   - Administrar las reseñas realizadas por los usuarios sobre los libros, incluyendo opciones para aprobar, editar o eliminar contenido inapropiado.
 
 ### Requisitos No Funcionales
 
@@ -180,7 +210,7 @@ El objetivo principal de **BookVerse** es proporcionar una plataforma digital qu
    - Debe ser accesible desde cualquier parte de la plataforma, mostrando un resumen de los libros seleccionados, sus precios y un botón para proceder al pago.
 
 4. **Panel de administración**:
-   - Debe ofrecer un acceso sencillo a las funciones de gestión de libros, reservas y usuarios, organizadas en secciones claras para facilitar su uso.
+   - Para los administradores, debe haber un panel sencillo con opciones de gestión de libros, reservas, reseñas y compras, organizado en secciones claras.
 
 ## Casos de Uso Más Importantes
 
@@ -244,6 +274,7 @@ Un usuario registrado decide comprar un libro digital. Le da al botón de compra
 El usuario ha realizado la compra y el libro se le enviará por correo electrónico.
 
 ### Modelo Relacional
-![Diagrama sin título drawio](https://github.com/user-attachments/assets/431e07ff-4b66-4a2d-950c-28f5fe5d052f)
+![ER-BookVerse drawio](https://github.com/user-attachments/assets/a44af7ec-74cc-42a8-9177-5cdd14cf7775)
+
 
 
