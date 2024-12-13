@@ -52,10 +52,10 @@ La plataforma permitirá a los usuarios realizar las siguientes acciones:
       - Supervisar y administrar las reservas realizadas por los usuarios, tanto de libros físicos como digitales.
 
   3. **Gestión de reseñas**:
-    - Revisar, moderar y eliminar reseñas realizadas por los usuarios para garantizar contenido adecuado y relevante.
+      - Revisar, moderar y eliminar reseñas realizadas por los usuarios para garantizar contenido adecuado y relevante.
       
    4. **Gestión de compras**:
-  - Visualizar y administrar todas las compras realizadas por los usuarios, ya sean de libros físicos o digitales.
+      - Visualizar y administrar todas las compras realizadas por los usuarios, ya sean de libros físicos o digitales.
   
 
 - **Sistema de comentarios y valoraciones**: 
